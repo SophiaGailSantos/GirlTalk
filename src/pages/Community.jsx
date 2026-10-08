@@ -1,5 +1,25 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './CommunityPage.css'
+
+const SEED_COMMENTS = {
+  'How do you usually prepare for your period?': [
+    { name: 'Ana', text: 'I mark the dates on my calendar and pack a little comfort kit the week before.' },
+    { name: 'Maya', text: 'I make sure to plan easier workouts and keep heat pads ready.' },
+  ],
+  'What helped you understand your cycle better?': [
+    { name: 'Jules', text: 'Tracking for a few months showed me patterns I never noticed.' },
+  ],
+  "What's one self-care habit you actually enjoy?": [
+    { name: 'Bea', text: 'My 20-minute evening tea-and-journal routine. It changed everything.' },
+  ],
+  'How do you handle cramps at work?': [
+    { name: 'Ria', text: 'Heat pad under my desk and saying no to extra tasks that week.' },
+  ],
+  'Gentle movement during your period — yay or nay?': [
+    { name: 'Kira', text: 'Yay for yoga! Intense workouts just make cramps worse for me.' },
+  ],
+}
 
 const DISCUSSIONS = [
   {
@@ -45,6 +65,58 @@ const DISCUSSIONS = [
 ]
 
 export default function Community() {
+  const [open, setOpen] = useState(null)
+  const [draft, setDraft] = useState('')
+  const [comments, setComments] = useState(() => ({ ...SEED_COMMENTS }))
+
+  const postReply = (e) => {
+    e.preventDefault()
+    const text = draft.trim()
+    if (!text || !open) return
+    setComments((prev) => ({
+      ...prev,
+      [open.topic]: [...(prev[open.topic] || []), { name: 'You', text }],
+    }))
+    setDraft('')
+  }
+
+  if (open) {
+    const list = comments[open.topic] || []
+    return (
+      <div className="page community-page">
+        <div className="container">
+          <button type="button" className="ap-back" onClick={() => { setOpen(null); setDraft('') }}>
+            &larr; Back to community
+          </button>
+          <article className="community-card">
+            <span className="community-cat">{open.cat}</span>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 32, margin: '10px 0' }}>{open.topic}</h1>
+            <p style={{ color: 'var(--ink-soft)' }}>{open.preview}</p>
+          </article>
+
+          <div className="community-thread">
+            <h3 style={{ margin: '28px 0 14px', color: 'var(--charcoal)' }}>{list.length} comment{list.length === 1 ? '' : 's'}</h3>
+            {list.map((c, i) => (
+              <div key={i} className="community-comment">
+                <strong>{c.name}</strong>
+                <p>{c.text}</p>
+              </div>
+            ))}
+            <form onSubmit={postReply} className="community-reply-form">
+              <textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder="Share your experience…"
+                rows={3}
+              />
+              <button type="submit" className="btn btn-primary">Post reply</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="page community-page">
       <div className="container">
@@ -80,7 +152,7 @@ export default function Community() {
                     {d.likes}
                   </span>
                 </div>
-                <span className="community-view">View Discussion</span>
+                <button type="button" className="community-view" onClick={() => setOpen(d)}>View Discussion</button>
               </div>
             </article>
           ))}

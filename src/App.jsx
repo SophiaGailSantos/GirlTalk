@@ -103,10 +103,10 @@ function PublicOnlyRoute({ children, redirectTo = '/dashboard' }) {
 /* ---------- Authenticated app shell (navbar + page) ---------- */
 function AppLayout({ children }) {
   return (
-    <>
+    <div className="app-theme-dark">
       <AppNavbar />
       <main>{children}</main>
-    </>
+    </div>
   )
 }
 

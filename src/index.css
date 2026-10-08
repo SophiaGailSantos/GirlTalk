@@ -333,3 +333,36 @@ section[id] {
     padding-block: 78px;
   }
 }
+
+/* ---------- Dark "black card" theme for the authenticated app ---------- */
+.app-theme-dark {
+  --white: #171214;
+  --cream: #120e10;
+  --cream-alt: #1d1518;
+  --grad-warm: linear-gradient(150deg, #140f11 0%, #1b1115 45%, #221419 100%);
+  --charcoal: #f6ecef;
+  --ink-soft: #cba9b2;
+  --ink-faint: #93707a;
+  --beige: #2b1a20;
+  --beige-deep: #3a222b;
+  --blush: #3a222b;
+  background: #0a0a0a;
+  color: var(--charcoal);
+  min-height: 100svh;
+}
+
+.app-theme-dark .appnav {
+  background: rgba(14, 11, 13, 0.88);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app-theme-dark .btn-primary,
+.app-theme-dark .community-explore,
+.app-theme-dark button[class*="btn"] {
+  color: #fff;
+}
+
+.app-theme-dark a.appnav-link,
+.app-theme-dark .appnav-word {
+  color: var(--charcoal);
+}
