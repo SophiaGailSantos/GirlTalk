@@ -1,0 +1,193 @@
+.appnav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(250, 245, 239, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(44, 36, 34, 0.06);
+}
+
+.appnav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 62px;
+}
+
+.appnav-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--charcoal);
+}
+
+.appnav-word {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.appnav-word em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--rose-deep);
+}
+
+.appnav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.appnav-links > a {
+  position: relative;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  padding: 9px 15px;
+  border-radius: var(--radius-pill);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.appnav-links > a:hover {
+  color: var(--charcoal);
+  background: rgba(44, 36, 34, 0.05);
+}
+
+.appnav-links > a.is-active {
+  color: var(--charcoal);
+}
+
+/* Period Tracker — the core feature, visually emphasized */
+.appnav-links > a.is-active[href='/tracker'] {
+  background: var(--rose-soft);
+  color: var(--rose-deep);
+  font-weight: 600;
+}
+
+.appnav-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+  padding-left: 16px;
+  border-left: 1px solid rgba(44, 36, 34, 0.1);
+}
+
+.appnav-avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--grad-cta);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.appnav-hi {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--charcoal);
+  white-space: nowrap;
+}
+
+.appnav-logout {
+  border: 1.5px solid rgba(44, 36, 34, 0.12);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  transition: border-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.appnav-logout:hover {
+  border-color: var(--rose);
+  color: var(--rose-deep);
+}
+
+.appnav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 6px;
+}
+
+.appnav-burger span {
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--charcoal);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.appnav-burger[aria-expanded='true'] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.appnav-burger[aria-expanded='true'] span:nth-child(2) {
+  opacity: 0;
+}
+
+.appnav-burger[aria-expanded='true'] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 880px) {
+  .appnav-burger {
+    display: flex;
+  }
+
+  .appnav-links {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 12px;
+    right: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(44, 36, 34, 0.07);
+    padding: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .appnav-links.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .appnav-links > a {
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+  }
+
+  .appnav-user {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(44, 36, 34, 0.08);
+  }
+
+  .appnav-hi {
+    width: 100%;
+  }
+}

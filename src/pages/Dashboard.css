@@ -1,0 +1,465 @@
+.dash-page {
+  padding: 48px 0 96px;
+  min-height: 100svh;
+  background: var(--cream);
+}
+
+/* ---------- Greeting ---------- */
+.dash-header {
+  margin-bottom: 36px;
+}
+
+.dash-header h1 {
+  font-size: clamp(32px, 4.5vw, 46px);
+  font-weight: 560;
+  letter-spacing: -0.025em;
+  color: var(--charcoal);
+}
+
+.dash-header p {
+  margin-top: 8px;
+  font-size: 17px;
+  color: var(--ink-soft);
+}
+
+/* ---------- Period Tracker (dominant) ---------- */
+.dash-tracker {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(44, 36, 34, 0.05);
+  box-shadow: var(--shadow-card);
+  padding: 40px;
+  margin-bottom: 32px;
+}
+
+.dash-tracker-main {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.dash-ring-wrap {
+  position: relative;
+  width: min(240px, 40vw);
+  aspect-ratio: 1;
+  flex-shrink: 0;
+}
+
+.dash-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.dash-ring-track {
+  fill: none;
+  stroke: var(--beige);
+  stroke-width: 11;
+}
+
+.dash-ring-fill {
+  fill: none;
+  stroke: url(#dashGrad);
+  stroke-width: 11;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dash-ring-marker {
+  fill: var(--white);
+  stroke: var(--rose);
+  stroke-width: 2.5;
+}
+
+.dash-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.dash-ring-day {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3.5vw, 40px);
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  color: var(--charcoal);
+}
+
+.dash-ring-sub {
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+.dash-tracker-info {
+  flex: 1;
+}
+
+.dash-tracker-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+}
+
+.dash-tracker-stats {
+  display: flex;
+  gap: 32px;
+  margin: 20px 0 28px;
+}
+
+.dash-stat span {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.dash-stat strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 560;
+  color: var(--charcoal);
+  margin-top: 4px;
+}
+
+.dash-tracker-btn {
+  padding: 14px 28px;
+}
+
+.dash-disclaimer {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(44, 36, 34, 0.07);
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  line-height: 1.6;
+  max-width: 560px;
+}
+
+/* ---------- Daily Health Check-In ---------- */
+.dash-checkin {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(44, 36, 34, 0.05);
+  box-shadow: var(--shadow-card);
+  padding: 36px 40px;
+  margin-bottom: 40px;
+}
+
+.dash-checkin h2 {
+  font-size: 24px;
+  font-weight: 560;
+  letter-spacing: -0.015em;
+  color: var(--charcoal);
+  margin-bottom: 26px;
+}
+
+.checkin-group {
+  margin-bottom: 22px;
+}
+
+.checkin-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+
+.checkin-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.checkin-chip {
+  border: 1.5px solid rgba(44, 36, 34, 0.12);
+  background: var(--white);
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s ease;
+}
+
+.checkin-chip:hover {
+  border-color: var(--rose);
+  color: var(--rose-deep);
+}
+
+.checkin-chip.is-on {
+  background: var(--rose-soft);
+  border-color: var(--rose);
+  color: var(--rose-deep);
+  font-weight: 600;
+}
+
+.checkin-notes {
+  width: 100%;
+  border: 1.5px solid rgba(44, 36, 34, 0.12);
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--ink);
+  padding: 14px 16px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.checkin-notes:focus {
+  border-color: var(--rose);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(201, 123, 143, 0.1);
+}
+
+.checkin-save {
+  margin-top: 8px;
+  padding: 14px 32px;
+}
+
+/* ---------- Sections ---------- */
+.dash-section {
+  margin-bottom: 40px;
+}
+
+.dash-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.dash-section h2 {
+  font-size: 24px;
+  font-weight: 560;
+  letter-spacing: -0.015em;
+  color: var(--charcoal);
+}
+
+.dash-section-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--rose-deep);
+  transition: gap 0.2s ease;
+}
+
+.dash-section-link:hover {
+  gap: 10px;
+}
+
+/* Articles */
+.dash-articles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.dash-article-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid rgba(44, 36, 34, 0.05);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dash-article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-soft);
+}
+
+.dash-article-cover {
+  height: 110px;
+}
+
+.dash-article-cover--rose {
+  background:
+    radial-gradient(circle at 80% 20%, #eec3cf 0%, transparent 55%),
+    linear-gradient(140deg, #f3ddd2, #eccfc4);
+}
+
+.dash-article-cover--beige {
+  background:
+    radial-gradient(circle at 80% 20%, #e8d5bd 0%, transparent 55%),
+    linear-gradient(140deg, #f0e4d2, #e5d3b8);
+}
+
+.dash-article-cover--blush {
+  background:
+    radial-gradient(circle at 80% 20%, #f0d0d8 0%, transparent 55%),
+    linear-gradient(140deg, #f5e0e4, #eccfd6);
+}
+
+.dash-article-body {
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dash-article-cat {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+}
+
+.dash-article-body strong {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--charcoal);
+}
+
+.dash-article-body span {
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+/* Threads */
+.dash-threads {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.dash-thread {
+  background: var(--white);
+  border: 1px solid rgba(44, 36, 34, 0.05);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dash-thread:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-soft);
+}
+
+.dash-thread-cat {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+}
+
+.dash-thread strong {
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--charcoal);
+}
+
+.dash-thread span {
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+/* ---------- Self-care ---------- */
+.dash-selfcare {
+  background: var(--grad-warm);
+  border-radius: var(--radius-lg);
+  padding: 32px 36px;
+}
+
+.dash-selfcare h2 {
+  font-size: 22px;
+  font-weight: 560;
+  letter-spacing: -0.015em;
+  color: var(--charcoal);
+  margin-bottom: 18px;
+}
+
+.dash-selfcare ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.dash-selfcare li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--charcoal);
+}
+
+.selfcare-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--rose);
+  flex-shrink: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .dash-tracker-main {
+    flex-direction: column;
+    text-align: center;
+    gap: 32px;
+  }
+
+  .dash-tracker-stats {
+    justify-content: center;
+  }
+
+  .dash-tracker-btn {
+    margin-inline: auto;
+  }
+
+  .dash-articles {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-threads {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-selfcare ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .dash-tracker {
+    padding: 28px 22px;
+  }
+
+  .dash-checkin {
+    padding: 28px 22px;
+  }
+
+  .dash-tracker-stats {
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .dash-selfcare ul {
+    grid-template-columns: 1fr;
+  }
+}

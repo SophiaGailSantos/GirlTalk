@@ -1,0 +1,379 @@
+.tp-section {
+  position: relative;
+  background: var(--black);
+  overflow: hidden;
+}
+
+.tp-glow {
+  position: absolute;
+  top: 10%;
+  left: -160px;
+  width: 520px;
+  height: 520px;
+  background: var(--grad-glow);
+  pointer-events: none;
+}
+
+.tp-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.tp-copy {
+  max-width: 520px;
+}
+
+.tp-points {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #d8cece;
+  font-size: 15px;
+}
+
+.tp-points li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tp-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255, 45, 120, 0.15);
+  color: var(--pink-soft);
+}
+
+.tp-actions {
+  margin-top: 34px;
+}
+
+/* --- App dashboard mock --- */
+
+.tp-dash {
+  position: relative;
+  background: #141010;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 50px 90px -50px rgba(0, 0, 0, 0.9);
+}
+
+.tp-dash-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tp-dash-head strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 19px;
+  color: #fff;
+}
+
+.tp-dash-head span {
+  display: block;
+  margin-top: 3px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.tp-app-chip {
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  font-size: 11px !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pink-soft) !important;
+  background: rgba(255, 45, 120, 0.12);
+  border: 1px solid rgba(255, 45, 120, 0.28);
+}
+
+.tp-dash-body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.tp-ring-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.tp-ring-wrap {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.tp-ring {
+  width: 100%;
+  height: 100%;
+}
+
+.tp-ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.09);
+  stroke-width: 13;
+}
+
+.tp-ring-fill {
+  fill: none;
+  stroke: url(#trackerGradient);
+  stroke-width: 13;
+  stroke-linecap: round;
+}
+
+.tp-ring-marker {
+  fill: var(--pink);
+}
+
+.tp-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.tp-ring-label strong {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: #fff;
+}
+
+.tp-ring-label span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.tp-phase {
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--pink-soft);
+  background: rgba(255, 45, 120, 0.12);
+  border: 1px solid rgba(255, 45, 120, 0.25);
+}
+
+/* Calendar */
+
+.tp-cal {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.tp-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.tp-cal-head strong {
+  font-size: 14.5px;
+  color: #fff;
+}
+
+.tp-cal-nav {
+  color: var(--muted);
+  display: inline-flex;
+  gap: 10px;
+}
+
+.tp-cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 6px;
+  text-align: center;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.tp-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.tp-cell {
+  aspect-ratio: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tp-cell--empty {
+  background: transparent;
+}
+
+.tp-cell.is-period {
+  background: var(--grad-pink);
+  color: #fff;
+  font-weight: 700;
+}
+
+.tp-cell.is-predicted {
+  border: 1px dashed rgba(255, 45, 120, 0.6);
+  color: var(--pink-soft);
+  background: rgba(255, 45, 120, 0.08);
+}
+
+.tp-cell.is-today {
+  border: 1.5px solid #fff;
+  font-weight: 700;
+}
+
+.tp-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.tp-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lg {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.lg--period {
+  background: var(--pink);
+}
+
+.lg--today {
+  background: #fff;
+}
+
+.lg--predicted {
+  background: rgba(255, 45, 120, 0.5);
+}
+
+/* Stats & footer */
+
+.tp-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.tp-stat {
+  padding: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tp-stat span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.tp-stat strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.tp-stat em {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-style: normal;
+  color: var(--muted);
+}
+
+.tp-dash-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.tp-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tp-tags span {
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.tp-private {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+@media (max-width: 1024px) {
+  .tp-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .tp-copy {
+    max-width: 620px;
+  }
+}
+
+@media (max-width: 760px) {
+  .tp-dash-body {
+    grid-template-columns: 1fr;
+  }
+
+  .tp-ring-col {
+    align-items: flex-start;
+  }
+
+  .tp-stats {
+    grid-template-columns: 1fr;
+  }
+}

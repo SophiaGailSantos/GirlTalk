@@ -1,0 +1,191 @@
+.features {
+  background: var(--cream);
+}
+
+.features-head {
+  max-width: 620px;
+  margin-bottom: 44px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.feat {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 1px solid rgba(20, 10, 15, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  box-shadow: var(--shadow-card-light);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.feat:hover {
+  transform: translateY(-4px);
+  border-color: rgba(207, 27, 92, 0.28);
+  box-shadow: var(--shadow-card-light-hover);
+}
+
+.feat h3 {
+  margin-top: 18px;
+  font-size: 21px;
+  letter-spacing: -0.01em;
+}
+
+.feat p {
+  margin-top: 9px;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--muted-ink);
+  flex: 1;
+}
+
+.feat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.feat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(207, 27, 92, 0.08);
+  color: var(--pink-deep);
+}
+
+.feat-icon--pink {
+  background: rgba(207, 27, 92, 0.1);
+  color: var(--pink-deep);
+}
+
+.feat-arrow {
+  color: var(--muted-ink);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.feat:hover .feat-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.feat-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pink-deep);
+}
+
+/* Featured Period Tracker card */
+.feat--featured {
+  grid-column: span 2;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 32px;
+  background: var(--black);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-card);
+}
+
+.feat--featured h3 {
+  padding-right: 12px;
+  color: #fff;
+}
+
+.feat--featured p {
+  color: rgba(255, 255, 255, 0.66);
+  max-width: 420px;
+}
+
+.feat--featured .feat-link {
+  color: var(--pink-soft);
+}
+
+.feat-featured-copy {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.feat-flag {
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pink-soft);
+  background: rgba(255, 45, 120, 0.12);
+  border: 1px solid rgba(255, 45, 120, 0.3);
+}
+
+.feat-featured-tip {
+  flex-shrink: 0;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 22px 26px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 45, 120, 0.08);
+  border: 1px solid rgba(255, 45, 120, 0.22);
+  text-align: left;
+}
+
+.feat-featured-tip strong {
+  font-family: var(--font-display);
+  font-size: 34px;
+  color: #fff;
+  line-height: 1;
+}
+
+.feat-featured-tip span {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.feat-featured-tip em {
+  margin-top: 6px;
+  font-size: 13px;
+  font-style: normal;
+  color: var(--pink-soft);
+}
+
+@media (max-width: 1024px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .feat--featured {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 760px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feat--featured {
+    grid-column: span 1;
+    flex-direction: column;
+  }
+
+  .feat-featured-tip {
+    align-self: stretch;
+  }
+}

@@ -1,0 +1,270 @@
+.reminders {
+  background: var(--cream-alt);
+}
+
+.reminders-head {
+  max-width: 620px;
+  margin-bottom: 44px;
+}
+
+.reminders-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.rem-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 1px solid rgba(20, 10, 15, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-card-light);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.rem-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(207, 27, 92, 0.28);
+  box-shadow: var(--shadow-card-light-hover);
+}
+
+.rem-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.rem-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pink-deep);
+  background: rgba(207, 27, 92, 0.08);
+}
+
+.rem-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pink-deep);
+  background: rgba(207, 27, 92, 0.07);
+  border: 1px solid rgba(207, 27, 92, 0.2);
+}
+
+.rem-card h3 {
+  font-size: 20px;
+}
+
+.rem-desc {
+  margin-top: 8px;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--muted-ink);
+}
+
+.rem-mock {
+  margin-top: 22px;
+  padding: 18px;
+  border-radius: var(--radius-md);
+  background: rgba(20, 10, 15, 0.03);
+  border: 1px solid rgba(20, 10, 15, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notif {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  border: 1px solid rgba(20, 10, 15, 0.08);
+}
+
+.notif-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pink-deep);
+  background: rgba(207, 27, 92, 0.08);
+  flex-shrink: 0;
+}
+
+.notif-copy {
+  flex: 1;
+}
+
+.notif-copy strong {
+  display: block;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.notif-copy span {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted-ink);
+}
+
+.notif-status {
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted-ink);
+  border: 1px solid rgba(20, 10, 15, 0.12);
+}
+
+.notif-status.is-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  background: var(--grad-pink);
+  border-color: transparent;
+}
+
+.week-strip {
+  margin-top: 4px;
+}
+
+.week-label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted-ink);
+  margin-bottom: 8px;
+}
+
+.week-days {
+  display: flex;
+  gap: 8px;
+}
+
+.week-day {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--ink-soft);
+  background: var(--white);
+  border: 1px solid rgba(20, 10, 15, 0.1);
+}
+
+.week-day.is-today {
+  border-color: var(--pink-deep);
+  color: var(--pink-deep);
+}
+
+.week-day.is-done {
+  background: rgba(207, 27, 92, 0.08);
+  color: var(--pink-deep);
+}
+
+.rem-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rem-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  border: 1px solid rgba(20, 10, 15, 0.08);
+}
+
+.rem-list li.is-done strong {
+  color: var(--muted-ink);
+  text-decoration: line-through;
+}
+
+.rem-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  border: 1.5px solid rgba(20, 10, 15, 0.2);
+  background: var(--white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rem-list li.is-done .rem-box {
+  background: var(--grad-pink);
+  border-color: transparent;
+  color: #fff;
+}
+
+.rem-box--date {
+  color: var(--pink-deep);
+  background: rgba(207, 27, 92, 0.07);
+  border-color: rgba(207, 27, 92, 0.18);
+}
+
+.rem-item-copy strong {
+  display: block;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.rem-item-copy span {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted-ink);
+}
+
+.rem-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.rem-tags span {
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(20, 10, 15, 0.1);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  background: var(--white);
+}
+
+.rem-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--muted-ink);
+}
+
+@media (max-width: 900px) {
+  .reminders-grid {
+    grid-template-columns: 1fr;
+  }
+}

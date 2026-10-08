@@ -1,0 +1,126 @@
+.profile-page {
+  background: var(--cream);
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.profile-card,
+.profile-side {
+  background: var(--white);
+  border: 1px solid rgba(44, 36, 34, 0.05);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-card);
+}
+
+.profile-card h2 {
+  font-size: 24px;
+  font-weight: 560;
+  letter-spacing: -0.015em;
+  color: var(--charcoal);
+  margin-bottom: 26px;
+}
+
+.profile-card .auth-field {
+  margin-bottom: 18px;
+}
+
+.profile-success {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #e8f5ec;
+  border: 1px solid #c4e4cf;
+  color: #2a7a4e;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 15px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 18px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.profile-save {
+  padding: 14px 28px;
+}
+
+.profile-logout {
+  padding: 14px 28px;
+}
+
+.profile-side {
+  text-align: center;
+}
+
+.profile-avatar-large {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--grad-cta);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 560;
+}
+
+.profile-side h3 {
+  font-size: 23px;
+  font-weight: 560;
+  color: var(--charcoal);
+}
+
+.profile-side > p {
+  margin-top: 5px;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+}
+
+.profile-info {
+  margin-top: 24px;
+  border-top: 1px solid rgba(44, 36, 34, 0.08);
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.profile-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.profile-info-row span {
+  color: var(--ink-soft);
+}
+
+.profile-note {
+  margin-top: 22px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  background: var(--blush);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+
+@media (max-width: 780px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}

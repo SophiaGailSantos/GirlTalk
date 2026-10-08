@@ -1,0 +1,151 @@
+.page {
+  padding: 48px 0 96px;
+  min-height: 100svh;
+  background: var(--cream);
+}
+
+.page-header {
+  max-width: 560px;
+  margin-bottom: 48px;
+}
+
+.tracker-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.tracker-form,
+.tracker-result {
+  background: var(--white);
+  border: 1px solid rgba(44, 36, 34, 0.05);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-card);
+}
+
+.tracker-form h2 {
+  font-size: 24px;
+  font-weight: 560;
+  letter-spacing: -0.015em;
+  color: var(--charcoal);
+  margin-bottom: 26px;
+}
+
+.tracker-form .auth-field {
+  margin-bottom: 18px;
+}
+
+.tracker-hint {
+  display: block;
+  margin-top: 7px;
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+.tracker-submit {
+  width: 100%;
+  padding: 15px;
+  margin-top: 6px;
+}
+
+.tracker-disclaimer {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(44, 36, 34, 0.07);
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  line-height: 1.65;
+}
+
+.tracker-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 340px;
+  color: var(--ink-soft);
+}
+
+.tracker-empty svg {
+  opacity: 0.35;
+  margin-bottom: 18px;
+  color: var(--ink-faint);
+}
+
+.tracker-empty p {
+  max-width: 260px;
+  font-size: 14.5px;
+}
+
+.tracker-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 340px;
+}
+
+.result-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+}
+
+.result-date {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  color: var(--charcoal);
+  margin-top: 14px;
+  line-height: 1.2;
+}
+
+.result-days {
+  margin-top: 10px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.result-card {
+  display: flex;
+  gap: 14px;
+  margin-top: 28px;
+  width: 100%;
+  justify-content: center;
+}
+
+.result-stat {
+  background: var(--cream);
+  border-radius: var(--radius-sm);
+  padding: 14px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.result-stat span {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.result-stat strong {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--charcoal);
+}
+
+@media (max-width: 780px) {
+  .tracker-grid {
+    grid-template-columns: 1fr;
+  }
+}
