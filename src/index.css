@@ -36,8 +36,8 @@
   --shadow-lift: 0 20px 50px rgba(0, 0, 0, 0.5);
 
   /* ---- Light-section palette ---- */
-  --cream: #f7c9dd;
-  --cream-alt: #f5b7d1;
+  --cream: #e89bbd;
+  --cream-alt: #e58bb0;
   --ink: #16100f;
   --ink-soft: #7a4055;
   /* Muted text on light backgrounds (≥4.5:1 on white/cream) */
@@ -52,10 +52,10 @@
   --rose: #e84a8a;
   --rose-deep: #cf1b5c;
   --rose-soft: #f9dde7;
-  --beige: #f2a9c6;
+  --beige: #e58bb0;
   --beige-deep: #f5a8c4;
-  --blush: #f49ec0;
-  --grad-warm: linear-gradient(150deg, #f9c3da 0%, #f4a9c8 45%, #ef94ba 100%);
+  --blush: #dd7fae;
+  --grad-warm: linear-gradient(150deg, #e59abb 0%, #dd7fae 45%, #d1679d 100%);
   --grad-cta: linear-gradient(135deg, #ef2268 0%, #cf1b5c 100%);
   --shadow-soft: 0 18px 40px -24px rgba(80, 45, 55, 0.28);
 
