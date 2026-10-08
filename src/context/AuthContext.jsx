@@ -70,6 +70,15 @@ export function AuthProvider({ children }) {
     return data
   }, [])
 
+  /* Sign in with Google (OAuth redirect). */
+  const signInWithGoogle = useCallback(async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${SITE_URL}/auth/callback` },
+    })
+    if (error) throw error
+  }, [])
+
   /* Log in with email + password. */
   const signInWithPassword = useCallback(async (email, password) => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -115,7 +124,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, signUp, signInWithPassword, signOut, updateProfile }}
+      value={{ user, loading, signUp, signInWithGoogle, signInWithPassword, signOut, updateProfile }}
     >
       {children}
     </AuthContext.Provider>
