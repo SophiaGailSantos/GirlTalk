@@ -36,10 +36,10 @@
   --shadow-lift: 0 20px 50px rgba(0, 0, 0, 0.5);
 
   /* ---- Light-section palette ---- */
-  --cream: #faf7f7;
-  --cream-alt: #f6f1f3;
+  --cream: #fff0f6;
+  --cream-alt: #ffe3ef;
   --ink: #16100f;
-  --ink-soft: #55484a;
+  --ink-soft: #7a4055;
   /* Muted text on light backgrounds (≥4.5:1 on white/cream) */
   --muted-ink: #746668;
   --line-light: rgba(20, 10, 15, 0.09);
@@ -48,14 +48,14 @@
 
   /* ---- Warm "rose & beige" palette (authenticated app + auth pages) ---- */
   --charcoal: #2b2322;
-  --ink-faint: #8b7b7b;
+  --ink-faint: #a06a82;
   --rose: #e84a8a;
   --rose-deep: #cf1b5c;
   --rose-soft: #f9dde7;
-  --beige: #efe4d8;
-  --beige-deep: #d8c2a6;
-  --blush: #fbd7e0;
-  --grad-warm: linear-gradient(150deg, #f8f1e6 0%, #f6e9dc 45%, #f8e4ea 100%);
+  --beige: #ffd9e8;
+  --beige-deep: #f5a8c4;
+  --blush: #ffc2da;
+  --grad-warm: linear-gradient(150deg, #ffe9f3 0%, #ffd9e9 45%, #ffc9e0 100%);
   --grad-cta: linear-gradient(135deg, #ef2268 0%, #cf1b5c 100%);
   --shadow-soft: 0 18px 40px -24px rgba(80, 45, 55, 0.28);
 
