@@ -5,9 +5,18 @@
   background: #0a0a0a;
 }
 
+.hub-hero,
+.hub-block {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
 .hub-hero {
-  max-width: 760px;
+  max-width: 780px;
   margin-bottom: 54px;
+  padding-inline: 24px;
 }
 
 .hub-title {
@@ -33,12 +42,22 @@
   max-width: 620px;
 }
 
+.hub-block-title {
+  font-size: clamp(24px, 3vw, 32px);
+  color: var(--charcoal);
+  margin-bottom: 8px;
+}
+
+.hub-block-sub {
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+}
+
 .hub-pillars {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 26px;
-}
 
 .hub-pillars a {
   display: inline-flex;
@@ -63,8 +82,6 @@
 .hub-block {
   margin-bottom: 56px;
 }
-
-.hub-block-title {
   font-size: clamp(24px, 3vw, 32px);
   color: var(--charcoal);
   margin-bottom: 8px;
