@@ -47,7 +47,7 @@ export default function AuthCallback() {
 
   if (hashError) {
     return (
-      <div className="auth-callback">
+      <div className="auth-callback app-theme-dark">
         <div className="auth-callback-card">
           <h1 className="auth-title">That link didn&apos;t work</h1>
           <div className="auth-error" role="alert">

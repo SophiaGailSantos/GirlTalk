@@ -17,7 +17,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="auth-page">
+    <div className="auth-page app-theme-dark">
       {/* Left — branding / visual */}
       <div className="auth-visual">
         <Link to="/" className="auth-visual-brand" aria-label="GirlTalk home">

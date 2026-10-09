@@ -527,3 +527,86 @@ a.auth-visual-brand {
   text-align: center;
   margin-bottom: 16px;
 }
+
+/* ---------- Dark theme for the login / signup pages ---------- */
+.auth-page.app-theme-dark {
+  --ink: #f6ecef;
+  background: #0d0a0b;
+  color: var(--charcoal);
+}
+
+.auth-page.app-theme-dark .auth-visual {
+  background: linear-gradient(150deg, #180f13 0%, #221218 45%, #2b141d 100%);
+}
+
+.auth-page.app-theme-dark .auth-visual-content h2,
+.auth-page.app-theme-dark .auth-title {
+  color: var(--charcoal);
+}
+
+.auth-page.app-theme-dark .auth-visual-content p,
+.auth-page.app-theme-dark .auth-sub {
+  color: var(--ink-soft);
+}
+
+.auth-page.app-theme-dark .auth-field label {
+  color: var(--charcoal);
+}
+
+.auth-page.app-theme-dark .auth-field input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: var(--charcoal);
+}
+
+.auth-page.app-theme-dark .auth-field input::placeholder {
+  color: var(--ink-faint);
+}
+
+.auth-page.app-theme-dark .auth-field input:focus {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 4px rgba(232, 74, 138, 0.18);
+}
+
+.auth-page.app-theme-dark .auth-toggle {
+  color: var(--ink-soft);
+}
+
+.auth-page.app-theme-dark .auth-notice {
+  background: rgba(255, 45, 120, 0.12);
+  border: 1px solid rgba(255, 45, 120, 0.3);
+  color: #ffd6e5;
+}
+
+.auth-page.app-theme-dark .auth-error {
+  background: rgba(255, 90, 120, 0.12);
+  border: 1px solid rgba(255, 90, 120, 0.32);
+  color: #ffc9d1;
+}
+
+.auth-page.app-theme-dark .auth-link {
+  color: #ff8fb8;
+}
+
+.auth-page.app-theme-dark .auth-check,
+.auth-page.app-theme-dark .auth-terms {
+  color: var(--ink-soft);
+}
+
+.auth-page.app-theme-dark .auth-back {
+  color: var(--ink-faint);
+}
+
+.auth-page.app-theme-dark .auth-visual-app {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.auth-callback.app-theme-dark {
+  background: #0d0a0b;
+}
+
+.auth-callback.app-theme-dark .auth-callback-card {
+  background: var(--surface);
+  border-color: rgba(255, 255, 255, 0.1);
+}
