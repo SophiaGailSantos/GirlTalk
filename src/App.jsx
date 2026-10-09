@@ -28,6 +28,7 @@ import Welcome from './pages/Welcome.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Tracker from './pages/Tracker.jsx'
 import Articles from './pages/Articles.jsx'
+import TopicsPage from './pages/Topics.jsx'
 import CommunityPage from './pages/Community.jsx'
 import Profile from './pages/Profile.jsx'
 import Info from './pages/Info.jsx'
@@ -189,6 +190,16 @@ function AppRoutes() {
           <ProtectedRoute>
             <AppLayout>
               <Tracker />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/topics"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <TopicsPage />
             </AppLayout>
           </ProtectedRoute>
         }

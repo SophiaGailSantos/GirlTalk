@@ -39,6 +39,9 @@ export default function AppNavbar() {
           <NavLink to="/tracker" onClick={close} className={({ isActive }) => (isActive ? 'is-active' : '')}>
             Cycle &amp; Reminders
           </NavLink>
+          <NavLink to="/topics" onClick={close} className={({ isActive }) => (isActive ? 'is-active' : '')}>
+            Health Topics
+          </NavLink>
           <NavLink to="/articles" onClick={close} className={({ isActive }) => (isActive ? 'is-active' : '')}>
             Articles
           </NavLink>

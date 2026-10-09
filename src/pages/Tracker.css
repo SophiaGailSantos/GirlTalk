@@ -707,3 +707,17 @@
   border-color: transparent;
   color: #fff;
 }
+
+/* ---- Health topics explorer inside the app ---- */
+.topics-page {
+  background: #0a0a0a;
+  padding: 0;
+}
+
+.topics-page .topics-section {
+  background: transparent;
+}
+
+.topics-page .topics-grid {
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
