@@ -610,3 +610,15 @@ a.auth-visual-brand {
   background: var(--surface);
   border-color: rgba(255, 255, 255, 0.1);
 }
+
+/* Google button keeps dark text on its white background in the dark theme */
+.auth-page.app-theme-dark .auth-google {
+  background: #fff;
+  color: #1f1a1c;
+  border-color: #e5d7d7;
+}
+
+.auth-page.app-theme-dark .auth-google:hover {
+  color: #1f1a1c;
+  box-shadow: 0 6px 18px rgba(255, 45, 120, 0.25);
+}
