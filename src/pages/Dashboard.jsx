@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import { ARTICLES } from '../data/articles.js'
+import { getProfile, saveProfile, cycleToday, dueReminders, reminderTimeLabel, toKey } from '../data/profile.js'
+import { buildCarePlan } from '../data/selfCare.js'
+import { ReminderAlert } from '../components/ReminderAlert.jsx'
 import './Dashboard.css'
 
 const DASH_ARTICLES = ARTICLES.slice(0, 3)
@@ -80,98 +83,76 @@ const SELFCARE = [
 ]
 
 
-/* Reads the cycle data the Period Tracker stores for this browser. */
-function useCycleData() {
-  const [cycle, setCycle] = useState(null)
+/* Loads this member's saved profile (cycle, reminders, check-ins) and keeps it fresh. */
+function useProfile(userId) {
+  const [profile, setProfile] = useState(() => (userId ? getProfile(userId) : null))
 
   useEffect(() => {
-    const load = () => {
-      try {
-        const days = JSON.parse(localStorage.getItem('girltalk:periodDays') || '[]')
-        const length = parseInt(localStorage.getItem('girltalk:cycleLength') || '28', 10)
-        if (!days.length) return setCycle(null)
+    const reload = () => setProfile(getProfile(userId))
+    reload()
+    window.addEventListener('focus', reload)
+    return () => window.removeEventListener('focus', reload)
+  }, [userId])
 
-        const sorted = [...days].sort()
-        let startKey = sorted[sorted.length - 1]
-        for (let i = sorted.length - 2; i >= 0; i--) {
-          const prev = new Date(sorted[i] + 'T00:00:00')
-          const cur = new Date(sorted[i + 1] + 'T00:00:00')
-          if ((cur - prev) / 86400000 === 1) startKey = sorted[i]
-          else break
-        }
+  const update = (patch) => {
+    if (!userId) return
+    setProfile(saveProfile(userId, patch))
+  }
 
-        const start = new Date(startKey + 'T00:00:00')
-        const today = new Date()
-        today.setHours(0, 0, 0, 0)
-        const day = Math.round((today - start) / 86400000) + 1
-        const next = new Date(start)
-        next.setDate(next.getDate() + length)
-        setCycle({ day: Math.max(1, day), length, daysUntil: Math.ceil((next - today) / 86400000) })
-      } catch {
-        setCycle(null)
-      }
-    }
-    load()
-    window.addEventListener('focus', load)
-    return () => window.removeEventListener('focus', load)
-  }, [])
-
-  return cycle
+  return { profile, update }
 }
 
-/* Reads the reminders the Cycle & Reminders page stores for this browser. */
-function useTodayReminders() {
-  const [state, setState] = useState({ items: [], done: new Set() })
+/* Reminders that are due right now, plus a one-shot browser notification. */
+function useDueReminders(profile, userId) {
+  const notifiedFor = useRef(null)
 
-  const load = () => {
-    let items = []
-    try {
-      const stored = JSON.parse(localStorage.getItem('girltalk:reminders') || 'null')
-      if (Array.isArray(stored) && stored.length) items = stored
-    } catch {
-      items = []
-    }
-    let done = new Set()
-    try {
-      done = new Set(JSON.parse(localStorage.getItem('girltalk:remindersDone') || '[]'))
-    } catch {
-      done = new Set()
-    }
-    setState({ items, done })
-  }
+  const due = useMemo(() => (profile ? dueReminders(profile) : []), [profile])
+  const dueKey = due.map((r) => r.id).join('|')
 
   useEffect(() => {
-    load()
-    window.addEventListener('focus', load)
-    const onStorage = () => load()
-    window.addEventListener('storage', onStorage)
-    return () => {
-      window.removeEventListener('focus', load)
-      window.removeEventListener('storage', onStorage)
-    }
-  }, [])
+    if (!profile || !userId || !due.length) return
+    if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return
+    if (notifiedFor.current === dueKey) return
+    due.forEach((r) => {
+      const parsed = reminderTimeLabel(r)
+      const title = typeof parsed === 'string' ? '⏰ GirlTalk reminder' : '⏰ GirlTalk reminder'
+      const body = `${r.title}${typeof parsed === 'string' ? '' : ` — due ${parsed.label}`}`
+      new Notification(title, { body, tag: r.id })
+    })
+    notifiedFor.current = dueKey
+  }, [profile, userId, due, dueKey])
 
-  const toggle = (id) => {
-    const next = new Set(state.done)
-    if (next.has(id)) next.delete(id)
-    else next.add(id)
-    setState((s) => ({ ...s, done: next }))
-    localStorage.setItem('girltalk:remindersDone', JSON.stringify([...next]))
-  }
-
-  return { ...state, toggle }
+  return due
 }
 
 export default function Dashboard() {
   const { user } = useAuth()
-  const cycle = useCycleData()
-  const reminders = useTodayReminders()
+  const { profile, update } = useProfile(user?.id)
 
-  const [mood, setMood] = useState('')
-  const [energy, setEnergy] = useState('')
-  const [symptoms, setSymptoms] = useState([])
-  const [note, setNote] = useState('')
+  const todayKey = toKey(new Date())
+  const todayCheckIn = profile?.checkIns?.[todayKey] || null
+
+  const [mood, setMood] = useState(todayCheckIn?.mood || '')
+  const [energy, setEnergy] = useState(todayCheckIn?.energy || '')
+  const [symptoms, setSymptoms] = useState(todayCheckIn?.symptoms || [])
+  const [note, setNote] = useState(todayCheckIn?.note || '')
   const [saved, setSaved] = useState(false)
+
+  const cycle = useMemo(() => (profile ? cycleToday(profile) : null), [profile])
+
+  const due = useDueReminders(profile, user?.id)
+
+  const carePlan = useMemo(
+    () =>
+      buildCarePlan({
+        mood,
+        energy,
+        symptoms,
+        cycleDay: cycle?.day ?? null,
+        cycleLength: cycle?.length ?? 28,
+      }),
+    [mood, energy, symptoms, cycle]
+  )
 
   const toggleSymptom = (s) => {
     setSymptoms((prev) =>
@@ -179,8 +160,21 @@ export default function Dashboard() {
     )
   }
 
+  const toggleReminder = (id) => {
+    const doneList = profile?.remindersDone || []
+    update({
+      remindersDone: doneList.includes(id) ? doneList.filter((x) => x !== id) : [...doneList, id],
+    })
+  }
+
   const handleSave = (e) => {
     e.preventDefault()
+    update({
+      checkIns: {
+        ...(profile?.checkIns || {}),
+        [todayKey]: { mood, energy, symptoms, note, at: new Date().toISOString() },
+      },
+    })
     setSaved(true)
     setTimeout(() => setSaved(false), 2500)
   }
@@ -332,6 +326,39 @@ export default function Dashboard() {
           </form>
         </section>
 
+        {/* Due reminder alert */}
+        <ReminderAlert
+          reminders={due}
+          onDone={(id) => toggleReminder(id)}
+          onDismiss={() => due.forEach((r) => toggleReminder(r.id))}
+        />
+
+        {/* Today's care plan — produced from the check-in above */}
+        <section className="dash-careplan reveal">
+          <div className="dash-section-head">
+            <h2>Today&apos;s care plan</h2>
+            {carePlan.phase && <span className="care-phase">{carePlan.phase.label}</span>}
+          </div>
+          <p className="care-focus">{carePlan.focus}</p>
+          {carePlan.tips.length > 0 ? (
+            <div className="care-grid">
+              {carePlan.tips.map((t) => (
+                <article key={t.title} className="care-card">
+                  <span className="care-icon" aria-hidden="true">{t.icon}</span>
+                  <div>
+                    <strong>{t.title}</strong>
+                    <p>{t.detail}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <p className="care-empty">
+              Tap how you&apos;re feeling above and we&apos;ll build today&apos;s care plan.
+            </p>
+          )}
+        </section>
+
         {/* Today's reminders */}
         <section className="dash-reminders reveal">
           <div className="dash-section-head">
@@ -344,27 +371,28 @@ export default function Dashboard() {
             </Link>
           </div>
 
-          {reminders.items.length === 0 ? (
+          {(profile?.reminders || []).length === 0 ? (
             <div className="rem-empty-dash">
               <p>No reminders yet. Add birth control or health reminders and they&apos;ll show up here every day.</p>
               <Link to="/tracker" className="btn btn-primary">Add my first reminder</Link>
             </div>
           ) : (
             <ul className="rem-dash-list">
-              {reminders.items.slice(0, 6).map((r) => {
-                const isDone = reminders.done.has(r.id)
+              {(profile?.reminders || []).slice(0, 6).map((r) => {
+                const isDone = (profile?.remindersDone || []).includes(r.id)
+                const label = reminderTimeLabel(r)
                 return (
                   <li key={r.id}>
                     <button
                       type="button"
                       className={`rem-item${isDone ? ' is-done' : ''}`}
-                      onClick={() => reminders.toggle(r.id)}
+                      onClick={() => toggleReminder(r.id)}
                       aria-pressed={isDone}
                     >
                       <span className="rem-check" aria-hidden="true">{isDone ? '✓' : ''}</span>
                       <span className="rem-item-copy">
                         <strong>{r.title}</strong>
-                        <span>{r.time}</span>
+                        <span>{typeof label === 'string' ? label : label.label}</span>
                       </span>
                       <span className="rem-group-tag">{r.group === 'pill' ? 'Birth control' : 'Health'}</span>
                     </button>

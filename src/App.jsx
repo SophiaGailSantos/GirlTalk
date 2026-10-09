@@ -7,6 +7,7 @@ import {
   useLocation,
 } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext.jsx'
+import { getProfile } from './data/profile.js'
 
 import Navbar from './components/Navbar.jsx'
 import AppNavbar from './components/AppNavbar.jsx'
@@ -29,6 +30,7 @@ import Dashboard from './pages/Dashboard.jsx'
 import Tracker from './pages/Tracker.jsx'
 import Articles from './pages/Articles.jsx'
 import TopicsPage from './pages/Topics.jsx'
+import Onboarding from './pages/Onboarding.jsx'
 import CommunityPage from './pages/Community.jsx'
 import Profile from './pages/Profile.jsx'
 import Info from './pages/Info.jsx'
@@ -82,7 +84,20 @@ function ProtectedRoute({ children }) {
   }
 
   if (!user) return <Navigate to="/login" replace />
+
+  // New members must finish setup before they see the app.
+  if (!isSetupDone(user.id)) return <Navigate to="/setup" replace />
+
   return children
+}
+
+/* True once the member has completed first-time setup. */
+function isSetupDone(userId) {
+  try {
+    return Boolean(getProfile(userId).setupDone)
+  } catch {
+    return true
+  }
 }
 
 /* ---------- Routes only for logged-out visitors ---------- */
@@ -113,7 +128,9 @@ function HomeOnlyRoute({ children }) {
     )
   }
 
-  if (user) return <Navigate to="/dashboard" replace />
+  if (user) {
+    return <Navigate to={isSetupDone(user.id) ? '/dashboard' : '/setup'} replace />
+  }
   return children
 }
 
@@ -162,6 +179,18 @@ function AppRoutes() {
 
       {/* Supabase email confirmation / magic link landing */}
       <Route path="/auth/callback" element={<AuthCallback />} />
+
+      {/* First-time setup — new members land here until setup is done */}
+      <Route
+        path="/setup"
+        element={
+          <ProtectedRoute>
+            <div className="app-theme-dark">
+              <Onboarding />
+            </div>
+          </ProtectedRoute>
+        }
+      />
 
       {/* Onboarding (after signup, before dashboard) */}
       <Route

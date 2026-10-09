@@ -1,137 +1,111 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useAuth } from '../context/AuthContext.jsx'
+import {
+  getProfile,
+  saveProfile,
+  toKey,
+  addDays,
+  lastPeriodStart,
+  reminderTimeLabel,
+} from '../data/profile.js'
 import './Tracker.css'
 
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-
-function toKey(d) {
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `${y}-${m}-${day}`
-}
-
-function addDays(date, n) {
-  const d = new Date(date)
-  d.setDate(d.getDate() + n)
-  return d
-}
 
 const REMINDER_GROUPS = [
   { key: 'pill', title: 'Birth control reminders', badge: 'Private', emoji: '💊' },
   { key: 'health', title: 'General health reminders', badge: 'Everyday', emoji: '🔔' },
 ]
 
+/* Monotonic id helper — keeps React renders pure. */
+let idCounter = 0
+const nextId = () => {
+  idCounter += 1
+  return `r${idCounter}`
+}
+
 const SUGGESTIONS = {
   pill: ['Birth control pill', 'Refill prescription', 'Injection reminder'],
   health: ['Drink water', 'Vitamins', 'Skincare', 'Stretching', 'Sleep by 10 PM'],
 }
 
-function loadReminders() {
-  try {
-    const stored = JSON.parse(localStorage.getItem('girltalk:reminders') || 'null')
-    if (Array.isArray(stored)) return stored
-  } catch {
-    /* ignore corrupt storage */
-  }
-  /* New user: start with an empty list so they can build their own. */
-  return []
-}
-
 export default function Tracker() {
+  const { user } = useAuth()
+  const [profile, setProfile] = useState(() => getProfile(user.id))
   const [viewDate, setViewDate] = useState(new Date())
-  const [cycleLength, setCycleLength] = useState(28)
-  const [periodDays, setPeriodDays] = useState(() => {
-    try {
-      return new Set(JSON.parse(localStorage.getItem('girltalk:periodDays') || '[]'))
-    } catch {
-      return new Set()
-    }
-  })
-
-  useEffect(() => {
-    localStorage.setItem('girltalk:periodDays', JSON.stringify([...periodDays]))
-  }, [periodDays])
-
-  useEffect(() => {
-    localStorage.setItem('girltalk:cycleLength', String(cycleLength))
-  }, [cycleLength])
-
-  const [selected, setSelected] = useState(null)
-  const [reminders, setReminders] = useState(loadReminders)
   const [draft, setDraft] = useState({ group: 'pill', title: '', time: '' })
-  const [done, setDone] = useState(() => {
-    try {
-      return new Set(JSON.parse(localStorage.getItem('girltalk:remindersDone') || '[]'))
-    } catch {
-      return new Set()
+  const [notifyOn, setNotifyOn] = useState(
+    () => typeof Notification !== 'undefined' && Notification.permission === 'granted'
+  )
+
+  const update = (patch) => setProfile(saveProfile(user.id, patch))
+
+  /* ---- Cycle ---- */
+  const cycleLength = profile.cycleLength || 28
+  const periodDays = useMemo(() => profile.periodDays || [], [profile.periodDays])
+
+  const lastStart = useMemo(() => lastPeriodStart(periodDays), [periodDays])
+
+  const predictedKeys = useMemo(() => {
+    const set = new Set()
+    if (lastStart) {
+      for (let i = 0; i < 5; i++) set.add(toKey(addDays(lastStart, cycleLength + i)))
     }
-  })
+    return set
+  }, [lastStart, cycleLength])
 
-  useEffect(() => {
-    localStorage.setItem('girltalk:reminders', JSON.stringify(reminders))
-  }, [reminders])
+  const toggleDay = (key) => {
+    const next = new Set(periodDays)
+    if (next.has(key)) next.delete(key)
+    else next.add(key)
+    update({ periodDays: [...next].sort() })
+  }
 
-  useEffect(() => {
-    localStorage.setItem('girltalk:remindersDone', JSON.stringify([...done]))
-  }, [done])
+  const setCycleLength = (value) => {
+    const length = Math.min(45, Math.max(21, parseInt(value, 10) || 28))
+    update({ cycleLength: length })
+  }
+
+  /* ---- Reminders ---- */
+  const reminders = profile.reminders || []
+  const done = profile.remindersDone || []
 
   const addReminder = (e) => {
     e.preventDefault()
     const title = draft.title.trim()
     if (!title) return
-    setReminders((prev) => [
-      ...prev,
-      { id: `${draft.group}-${Date.now()}`, group: draft.group, title, time: draft.time.trim() || 'Anytime' },
-    ])
+    update({
+      reminders: [
+        ...reminders,
+        { id: `${draft.group}-${nextId()}`, group: draft.group, title, time: draft.time.trim() || 'Anytime' },
+      ],
+    })
     setDraft((d) => ({ ...d, title: '', time: '' }))
   }
 
-  const removeReminder = (id) => {
-    setReminders((prev) => prev.filter((r) => r.id !== id))
-    setDone((prev) => {
-      const next = new Set(prev)
-      next.delete(id)
-      return next
+  const addSuggestion = (group, title) =>
+    update({
+      reminders: [...reminders, { id: `${group}-${nextId()}`, group, title, time: 'Anytime' }],
     })
-  }
+
+  const removeReminder = (id) =>
+    update({ reminders: reminders.filter((r) => r.id !== id) })
 
   const toggleDone = (id) =>
-    setDone((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
+    update({ remindersDone: done.includes(id) ? done.filter((x) => x !== id) : [...done, id] })
 
-  const toggleDay = (key) => {
-    setPeriodDays((prev) => {
-      const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
-      return next
-    })
-  }
-
-  const sortedMarked = [...periodDays].sort()
-  // Start of the most recent continuous run of marked period days.
-  let lastStart = null
-  if (sortedMarked.length) {
-    let startKey = sortedMarked[sortedMarked.length - 1]
-    for (let i = sortedMarked.length - 2; i >= 0; i--) {
-      const prev = new Date(sortedMarked[i] + 'T00:00:00')
-      const cur = new Date(sortedMarked[i + 1] + 'T00:00:00')
-      if ((cur - prev) / (1000 * 60 * 60 * 24) === 1) startKey = sortedMarked[i]
-      else break
+  const askNotifications = async () => {
+    if (typeof Notification === 'undefined') return
+    const result = await Notification.requestPermission()
+    setNotifyOn(result === 'granted')
+    if (result === 'granted') {
+      new Notification('⏰ GirlTalk reminders are on', {
+        body: 'We’ll nudge you while you’re on GirlTalk when a reminder is due.',
+      })
     }
-    lastStart = new Date(startKey + 'T00:00:00')
   }
 
-  // Predicted next period = last period start + cycleLength (5-day window).
-  const predictedKeys = new Set()
-  if (lastStart) {
-    for (let i = 0; i < 5; i++) predictedKeys.add(toKey(addDays(lastStart, cycleLength + i)))
-  }
-
+  /* ---- Calendar maths ---- */
   const firstOfMonth = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1)
   const startOffset = firstOfMonth.getDay()
   const daysInMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate()
@@ -141,10 +115,16 @@ export default function Tracker() {
 
   const todayKey = toKey(new Date())
   const monthLabel = viewDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-
   const daysUntilNext = lastStart
-    ? Math.ceil((addDays(lastStart, cycleLength) - new Date()) / (1000 * 60 * 60 * 24))
+    ? Math.ceil((addDays(lastStart, cycleLength) - new Date()) / 86400000)
     : null
+
+  useEffect(() => {
+    /* keep the profile in sync if another tab changes it */
+    const onFocus = () => setProfile(getProfile(user.id))
+    window.addEventListener('focus', onFocus)
+    return () => window.removeEventListener('focus', onFocus)
+  }, [user.id])
 
   return (
     <div className="page tracker-page">
@@ -174,25 +154,41 @@ export default function Tracker() {
               </div>
               <div className="cal-stat">
                 <span>Marked days</span>
-                <strong>{periodDays.size}</strong>
+                <strong>{periodDays.length}</strong>
               </div>
             </div>
 
             <div className="cal-head">
-              <button type="button" className="cal-nav" onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))} aria-label="Previous month">‹</button>
+              <button
+                type="button"
+                className="cal-nav"
+                onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))}
+                aria-label="Previous month"
+              >
+                ‹
+              </button>
               <strong>{monthLabel}</strong>
-              <button type="button" className="cal-nav" onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1))} aria-label="Next month">›</button>
+              <button
+                type="button"
+                className="cal-nav"
+                onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1))}
+                aria-label="Next month"
+              >
+                ›
+              </button>
             </div>
 
             <div className="cal-weekdays">
-              {WEEKDAYS.map((w, i) => <span key={i}>{w}</span>)}
+              {WEEKDAYS.map((w, i) => (
+                <span key={i}>{w}</span>
+              ))}
             </div>
 
             <div className="cal-grid">
               {cells.map((d, i) => {
                 if (!d) return <span key={i} className="cal-cell cal-cell--blank" />
                 const key = toKey(d)
-                const isPeriod = periodDays.has(key)
+                const isPeriod = periodDays.includes(key)
                 const isPredicted = predictedKeys.has(key) && !isPeriod
                 const isToday = key === todayKey
                 return (
@@ -222,10 +218,16 @@ export default function Tracker() {
                 min="21"
                 max="45"
                 value={cycleLength}
-                onChange={(e) => setCycleLength(Math.min(45, Math.max(21, parseInt(e.target.value, 10) || 28)))}
+                onChange={(e) => setCycleLength(e.target.value)}
               />
               days
             </label>
+
+            {periodDays.length > 0 && (
+              <button type="button" className="cal-clear" onClick={() => update({ periodDays: [] })}>
+                Clear marked days
+              </button>
+            )}
           </div>
 
           <div className="tracker-result reveal">
@@ -233,7 +235,11 @@ export default function Tracker() {
               <>
                 <span className="result-label">Estimated next period</span>
                 <strong className="result-date">
-                  {addDays(lastStart, cycleLength).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  {addDays(lastStart, cycleLength).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
                 </strong>
                 <span className="result-days">
                   {daysUntilNext > 0
@@ -242,14 +248,20 @@ export default function Tracker() {
                       ? 'Expected around today'
                       : `Passed ${Math.abs(daysUntilNext)} day${Math.abs(daysUntilNext) === 1 ? '' : 's'} ago`}
                 </span>
-                <button type="button" className="cal-clear" onClick={() => setPeriodDays(new Set())}>
-                  Clear marked days
-                </button>
               </>
             ) : (
               <div className="tracker-empty">
-                <p>Tap the dates you had your period on the calendar to see your prediction.</p>
+                <p>
+                  Mark the first day of your last period and we&apos;ll track your cycle day and
+                  predict your next one.
+                </p>
               </div>
+            )}
+
+            {!notifyOn && typeof Notification !== 'undefined' && (
+              <button type="button" className="cal-notify" onClick={askNotifications}>
+                🔔 Turn on browser reminders
+              </button>
             )}
           </div>
         </div>
@@ -273,13 +285,7 @@ export default function Tracker() {
                     </div>
                   </div>
 
-                  <form
-                    className="rem-add"
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      addReminder(e)
-                    }}
-                  >
+                  <form className="rem-add" onSubmit={addReminder}>
                     <input
                       type="text"
                       placeholder={`Add a ${g.key === 'pill' ? 'birth control' : 'health'} reminder`}
@@ -310,12 +316,7 @@ export default function Tracker() {
                               key={s}
                               type="button"
                               className="rem-suggest-btn"
-                              onClick={() =>
-                                setReminders((prev) => [
-                                  ...prev,
-                                  { id: `${g.key}-${Date.now()}-${s}`, group: g.key, title: s, time: 'Anytime' },
-                                ])
-                              }
+                              onClick={() => addSuggestion(g.key, s)}
                             >
                               + {s}
                             </button>
@@ -324,7 +325,8 @@ export default function Tracker() {
                       </li>
                     ) : (
                       items.map((item) => {
-                        const isDone = done.has(item.id)
+                        const isDone = done.includes(item.id)
+                        const label = reminderTimeLabel(item)
                         return (
                           <li key={item.id} className="rem-row">
                             <button
@@ -336,7 +338,7 @@ export default function Tracker() {
                               <span className="rem-check" aria-hidden="true">{isDone ? '✓' : ''}</span>
                               <span className="rem-item-copy">
                                 <strong>{item.title}</strong>
-                                <span>{item.time}</span>
+                                <span>{typeof label === 'string' ? label : label.label}</span>
                               </span>
                             </button>
                             <button

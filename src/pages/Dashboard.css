@@ -690,3 +690,66 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Today's care plan ---- */
+.dash-careplan {
+  background: linear-gradient(160deg, #1e1418 0%, #16100f 60%, #1b1216 100%);
+  border: 1px solid rgba(255, 45, 120, 0.22);
+  border-radius: var(--radius-lg);
+  padding: 28px 30px;
+}
+
+.care-phase {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rose);
+  background: rgba(255, 45, 120, 0.12);
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.care-focus {
+  color: var(--charcoal);
+  font-family: var(--font-display);
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.care-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.care-card {
+  display: flex;
+  gap: 13px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.care-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.care-card strong {
+  color: var(--charcoal);
+  display: block;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.care-card p {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.care-empty {
+  color: var(--ink-soft);
+}
