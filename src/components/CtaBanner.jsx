@@ -23,7 +23,7 @@ export default function CtaBanner() {
           with GirlTalk.
         </p>
         <div className="cta-actions">
-          <Link to="/signup" className="btn btn-primary btn-lg">
+          <Link to="/login" className="btn btn-primary btn-lg">
             Join GirlTalk
             <IconArrow size={17} />
           </Link>

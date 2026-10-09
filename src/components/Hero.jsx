@@ -111,7 +111,7 @@ export default function Hero() {
           </p>
 
           <div className="hero-actions reveal">
-            <Link to="/signup" className="btn btn-primary">
+            <Link to="/login" className="btn btn-primary">
               Get Started
               <IconArrow size={16} />
             </Link>

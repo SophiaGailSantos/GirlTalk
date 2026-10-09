@@ -58,11 +58,8 @@ export default function Navbar() {
               </Link>
             ) : (
               <>
-                <Link to="/login" className="btn btn-ghost btn-sm" onClick={close}>
+                <Link to="/login" className="btn btn-primary btn-sm" onClick={close}>
                   Log In
-                </Link>
-                <Link to="/signup" className="btn btn-primary btn-sm" onClick={close}>
-                  Sign Up
                 </Link>
               </>
             )}
@@ -76,11 +73,8 @@ export default function Navbar() {
             </Link>
           ) : (
             <>
-              <Link to="/login" className="nav-login">
+              <Link to="/login" className="btn btn-primary btn-sm">
                 Log In
-              </Link>
-              <Link to="/signup" className="btn btn-primary btn-sm">
-                Sign Up
               </Link>
             </>
           )}

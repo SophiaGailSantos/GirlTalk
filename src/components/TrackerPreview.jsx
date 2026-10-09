@@ -207,7 +207,7 @@ export default function TrackerPreview() {
           </ul>
 
           <div className="tp-actions">
-            <Link to="/signup" className="btn btn-primary">
+            <Link to="/login" className="btn btn-primary">
               Track Your Cycle
               <IconArrow size={16} />
             </Link>

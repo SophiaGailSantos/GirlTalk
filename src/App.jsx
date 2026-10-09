@@ -23,7 +23,6 @@ import CtaBanner from './components/CtaBanner.jsx'
 import Footer from './components/Footer.jsx'
 
 import Login from './pages/Login.jsx'
-import Signup from './pages/Signup.jsx'
 import AuthCallback from './pages/AuthCallback.jsx'
 import Welcome from './pages/Welcome.jsx'
 import Dashboard from './pages/Dashboard.jsx'
@@ -168,14 +167,8 @@ function AppRoutes() {
           </PublicOnlyRoute>
         }
       />
-      <Route
-        path="/signup"
-        element={
-          <PublicOnlyRoute redirectTo="/dashboard">
-            <Signup />
-          </PublicOnlyRoute>
-        }
-      />
+      {/* Signup lives on the same Google-only screen as login. */}
+      <Route path="/signup" element={<Navigate to="/login" replace />} />
 
       {/* Supabase email confirmation / magic link landing */}
       <Route path="/auth/callback" element={<AuthCallback />} />

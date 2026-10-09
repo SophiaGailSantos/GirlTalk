@@ -77,7 +77,7 @@ export default function Login() {
             <span className="logo-word">Girl<em>Talk</em></span>
           </Link>
 
-          <h1 className="auth-title">Welcome back</h1>
+          <h1 className="auth-title">Log in to GirlTalk</h1>
           <p className="auth-sub">Your space to track, learn, and connect.</p>
 
           {notice && (
@@ -106,11 +106,6 @@ export default function Login() {
               </svg>
               Continue with Google
             </button>
-
-            <p className="auth-switch">
-              Don&apos;t have an account?{' '}
-              <Link to="/signup" className="auth-link">Sign Up</Link>
-            </p>
 
             <p className="auth-back">
               <Link to="/" className="auth-link">&larr; Back to homepage</Link>
