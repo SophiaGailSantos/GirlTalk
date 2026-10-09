@@ -191,3 +191,113 @@
   align-self: flex-start;
   padding: 12px 26px;
 }
+
+/* ---- Community redesign ---- */
+.community-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.community-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: linear-gradient(180deg, #1b1417 0%, #15100f 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.community-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(232, 74, 138, 0.5);
+}
+
+.community-card-top {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.community-avatar {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--grad-cta);
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  font-family: var(--font-display);
+}
+
+.community-card h3 {
+  color: var(--charcoal);
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+.community-card-main > p {
+  color: var(--ink-soft);
+  font-size: 14.5px;
+  line-height: 1.65;
+  margin-top: 14px;
+}
+
+.community-card-side {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 14px;
+}
+
+.community-metrics {
+  display: flex;
+  gap: 16px;
+  color: var(--ink-faint);
+  font-size: 13px;
+}
+
+.community-view {
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--charcoal);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.community-view:hover {
+  background: var(--grad-cta);
+  border-color: transparent;
+  color: #fff;
+}
+
+.community-note {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+}
+
+.community-note p {
+  color: var(--ink-soft);
+}
+
+.community-thread .community-card {
+  background: linear-gradient(180deg, #1e1619 0%, #17110f 100%);
+}
+
+.community-comment {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+@media (max-width: 820px) {
+  .community-list {
+    grid-template-columns: 1fr;
+  }
+}

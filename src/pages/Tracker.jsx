@@ -91,6 +91,25 @@ export default function Tracker() {
 
         <div className="tracker-grid">
           <div className="tracker-calendar reveal">
+            <div className="cal-stats">
+              <div className="cal-stat">
+                <span>Next period</span>
+                <strong>
+                  {lastStart
+                    ? addDays(lastStart, cycleLength).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                    : '—'}
+                </strong>
+              </div>
+              <div className="cal-stat">
+                <span>Cycle length</span>
+                <strong>{cycleLength} days</strong>
+              </div>
+              <div className="cal-stat">
+                <span>Marked days</span>
+                <strong>{periodDays.size}</strong>
+              </div>
+            </div>
+
             <div className="cal-head">
               <button type="button" className="cal-nav" onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))} aria-label="Previous month">‹</button>
               <strong>{monthLabel}</strong>

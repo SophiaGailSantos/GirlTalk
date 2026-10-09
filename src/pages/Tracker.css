@@ -295,3 +295,147 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Period tracker redesign ---- */
+.tracker-calendar {
+  background: linear-gradient(180deg, #1b1417 0%, #15100f 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: 0 24px 60px -34px rgba(0, 0, 0, 0.9);
+}
+
+.cal-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.cal-stat {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cal-stat span {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.cal-stat strong {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--charcoal);
+}
+
+.cal-head {
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.cal-nav {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.cal-nav:hover {
+  background: var(--rose);
+  border-color: transparent;
+  color: #fff;
+}
+
+.cal-weekdays {
+  color: var(--ink-faint);
+  margin: 18px 0 10px;
+}
+
+.cal-day {
+  width: 46px;
+  height: 46px;
+  font-size: 15px;
+  color: var(--charcoal);
+}
+
+.cal-day:hover {
+  background: rgba(232, 74, 138, 0.22);
+}
+
+.cal-day--today {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--charcoal);
+}
+
+.cal-day--period {
+  background: var(--grad-cta);
+  color: #fff;
+  box-shadow: 0 8px 20px -10px rgba(239, 34, 104, 0.9);
+}
+
+.cal-day--predicted {
+  border: 2px dotted var(--rose);
+  color: var(--rose);
+}
+
+.cal-cell--blank {
+  width: 46px;
+  height: 46px;
+}
+
+.cal-legend {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.dot--today {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.cal-cycle {
+  color: var(--ink-soft);
+}
+
+.cal-cycle input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: var(--charcoal);
+}
+
+.tracker-result {
+  background: linear-gradient(180deg, #1b1417 0%, #15100f 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 60px -34px rgba(0, 0, 0, 0.9);
+}
+
+.result-date,
+.result-label,
+.tracker-empty p {
+  color: var(--charcoal);
+}
+
+.result-days,
+.tracker-empty p {
+  color: var(--ink-soft);
+}
+
+@media (max-width: 620px) {
+  .cal-day,
+  .cal-cell--blank {
+    width: 38px;
+    height: 38px;
+  }
+}

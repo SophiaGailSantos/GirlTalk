@@ -131,10 +131,17 @@ export default function Community() {
 
         <div className="community-list">
           {DISCUSSIONS.map((d) => (
-            <article key={d.topic} className={`community-card community-card--${d.color} reveal`}>
+            <article key={d.topic} className="community-card reveal">
               <div className="community-card-main">
-                <span className="community-cat">{d.cat}</span>
-                <h3>{d.topic}</h3>
+                <div className="community-card-top">
+                  <span className="community-avatar" aria-hidden="true">
+                    {d.topic.charAt(0)}
+                  </span>
+                  <div>
+                    <span className="community-cat">{d.cat}</span>
+                    <h3>{d.topic}</h3>
+                  </div>
+                </div>
                 <p>{d.preview}</p>
               </div>
               <div className="community-card-side">

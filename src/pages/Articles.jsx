@@ -5,6 +5,8 @@ const ARTICLES = [
   {
     cat: 'Period Health',
     title: 'Understanding Your Menstrual Cycle',
+    image: 'https://images.pexels.com/photos/5239919/pexels-photo-5239919.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    photoCredit: 'https://www.pexels.com/photo/5239919/',
     desc: 'What actually happens during each phase of your cycle — and why it matters for your energy, mood, and body.',
     read: '7 min read',
     accent: 'rose',
@@ -14,6 +16,8 @@ const ARTICLES = [
   {
     cat: 'Self-Care',
     title: 'Simple Ways to Practice Self-Care During Your Period',
+    image: 'https://images.pexels.com/photos/6632930/pexels-photo-6632930.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    photoCredit: 'https://www.pexels.com/photo/6632930/',
     desc: 'Small, realistic habits that can help you feel more comfortable and rested on your period days.',
     read: '5 min read',
     accent: 'beige',
@@ -22,6 +26,8 @@ const ARTICLES = [
   {
     cat: 'Cycle Health',
     title: 'When Should You Pay Attention to Changes in Your Cycle?',
+    image: 'https://images.pexels.com/photos/10223038/pexels-photo-10223038.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    photoCredit: 'https://www.pexels.com/photo/10223038/',
     desc: 'Occasional variation is normal — but some changes are worth noting and discussing with a healthcare professional.',
     read: '6 min read',
     accent: 'blush',
@@ -30,6 +36,8 @@ const ARTICLES = [
   {
     cat: 'Wellness',
     title: 'Sleep, Energy, and Your Cycle: What to Expect',
+    image: 'https://images.pexels.com/photos/7622515/pexels-photo-7622515.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    photoCredit: 'https://www.pexels.com/photo/7622515/',
     desc: 'Why your energy levels shift throughout the month, and how to work with your body instead of against it.',
     read: '5 min read',
     accent: 'beige',
@@ -38,6 +46,8 @@ const ARTICLES = [
   {
     cat: 'Nutrition',
     title: 'Gentle Nutrition Tips for Every Phase of Your Cycle',
+    image: 'https://images.pexels.com/photos/6823369/pexels-photo-6823369.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    photoCredit: 'https://www.pexels.com/photo/6823369/',
     desc: 'No strict diets — just simple, supportive food ideas that can help you feel your best all month long.',
     read: '4 min read',
     accent: 'blush',
@@ -46,6 +56,8 @@ const ARTICLES = [
   {
     cat: 'Mind',
     title: 'Cycle-Synced Journaling: A Beginner-Friendly Practice',
+    image: 'https://images.pexels.com/photos/7623657/pexels-photo-7623657.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    photoCredit: 'https://www.pexels.com/photo/7623657/',
     desc: 'How a few minutes of journaling each day can help you notice patterns in your mood, energy, and cycle.',
     read: '6 min read',
     accent: 'rose',
@@ -66,12 +78,18 @@ export default function Articles() {
             &larr; Back to articles
           </button>
           <article className="ap-article">
-            <span className="ap-cat">{selected.cat}</span>
+            <div className="ap-article-hero">
+              <img src={selected.image} alt="" loading="lazy" />
+              <span className="ap-cat">{selected.cat}</span>
+            </div>
             <h1>{selected.title}</h1>
             <p className="ap-article-meta">{selected.read}</p>
             {selected.body.map((para, i) => (
               <p key={i}>{para}</p>
             ))}
+            <a className="ap-credit" href={selected.photoCredit} target="_blank" rel="noreferrer">
+              Photo via Pexels
+            </a>
           </article>
         </div>
       </div>
@@ -92,7 +110,8 @@ export default function Articles() {
 
         {/* Featured */}
         <article className="ap-featured reveal">
-          <div className={`ap-cover ap-cover--${featured.accent}`}>
+          <div className="ap-cover">
+            <img src={featured.image} alt="" />
             <span className="ap-cat">{featured.cat}</span>
           </div>
           <div className="ap-featured-body">
@@ -114,7 +133,8 @@ export default function Articles() {
         <div className="ap-grid">
           {rest.map((a) => (
             <article key={a.title} className="ap-card reveal">
-              <div className={`ap-card-cover ap-cover--${a.accent}`}>
+              <div className="ap-card-cover">
+                <img src={a.image} alt="" loading="lazy" />
                 <span className="ap-cat">{a.cat}</span>
               </div>
               <div className="ap-card-body">
