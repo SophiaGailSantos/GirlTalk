@@ -1,9 +1,23 @@
 /*
  * The public entry URL for this deployment.
  *
- * In local dev this resolves to whatever origin you opened in the browser
- * (e.g. http://localhost:4173). For a deployed site, set VITE_APP_URL in
- * `.env` (and whitelist it in Supabase → Authentication → URL Configuration),
- * so confirmation emails always point back to the real site.
+ * Google sign-in returns to this URL, so it must match the host the member
+ * actually started on. Local addresses (localhost / LAN IPs) are the only case
+ * where we honour VITE_APP_URL; on a real deployment we mirror the current
+ * origin so the callback can never bounce someone to a different (possibly
+ * preview) hostname. Whitelist your live domains in Supabase → Authentication →
+ * URL Configuration.
  */
-export const SITE_URL = (import.meta.env.VITE_APP_URL || window.location.origin).replace(/\/$/, '')
+const isLocalAddress = (hostname) =>
+  hostname === 'localhost' ||
+  hostname.endsWith('.local') ||
+  /^127\./.test(hostname) ||
+  /^10\./.test(hostname) ||
+  /^192\.168\./.test(hostname) ||
+  /^172\.(1[6-9]|2\d|3[01])\./.test(hostname)
+
+const origin = window.location.origin.replace(/\/$/, '')
+
+export const SITE_URL = isLocalAddress(window.location.hostname)
+  ? (import.meta.env.VITE_APP_URL || origin).replace(/\/$/, '')
+  : origin
