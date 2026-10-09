@@ -16,7 +16,7 @@
 
   --white: #ffffff;
   --off-white: #f5f0f0;
-  --muted: #a09090;
+  --muted: #c4b0b4;
   --muted-dark: #6b5c5c;
 
   --grad-pink: linear-gradient(135deg, #ef2268 0%, #cf1b5c 100%);
@@ -349,6 +349,7 @@ section[id] {
 /* ---------- Dark "black card" theme for the authenticated app ---------- */
 .app-theme-dark {
   --white: #171214;
+  --muted: #cbb8bd;
   --cream: #120e10;
   --cream-alt: #1d1518;
   --grad-warm: linear-gradient(150deg, #140f11 0%, #1b1115 45%, #221419 100%);

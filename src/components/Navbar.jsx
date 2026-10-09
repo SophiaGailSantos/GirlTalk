@@ -8,8 +8,7 @@ const LINKS = [
   { label: 'Home', to: '/' },
   { label: 'Health Topics', to: '/#topics' },
   { label: 'Blogs', to: '/#blogs' },
-  { label: 'Period Tracker', to: '/#tracker' },
-  { label: 'Reminders', to: '/#reminders' },
+  { label: 'Cycle & Reminders', to: '/#tracker' },
 ]
 
 export default function Navbar() {

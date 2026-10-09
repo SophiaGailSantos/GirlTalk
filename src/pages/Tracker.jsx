@@ -16,6 +16,30 @@ function addDays(date, n) {
   return d
 }
 
+const REMINDERS = [
+  {
+    key: 'pill',
+    title: 'Birth control reminders',
+    badge: 'Private',
+    emoji: '💊',
+    items: [
+      { label: 'Birth control pill', when: 'Today · 9:00 PM' },
+      { label: 'Refill prescription', when: 'Friday · 10:00 AM' },
+    ],
+  },
+  {
+    key: 'health',
+    title: 'General health reminders',
+    badge: 'Everyday',
+    emoji: '🔔',
+    items: [
+      { label: 'Drink water', when: 'Daily · all day' },
+      { label: 'Vitamins', when: 'Daily · 8:00 AM' },
+      { label: 'Check-in appointment', when: 'When booked' },
+    ],
+  },
+]
+
 export default function Tracker() {
   const [viewDate, setViewDate] = useState(new Date())
   const [cycleLength, setCycleLength] = useState(28)
@@ -34,6 +58,27 @@ export default function Tracker() {
   useEffect(() => {
     localStorage.setItem('girltalk:cycleLength', String(cycleLength))
   }, [cycleLength])
+
+  const [selected, setSelected] = useState(null)
+  const [done, setDone] = useState(() => {
+    try {
+      return new Set(JSON.parse(localStorage.getItem('girltalk:remindersDone') || '[]'))
+    } catch {
+      return new Set()
+    }
+  })
+
+  useEffect(() => {
+    localStorage.setItem('girltalk:remindersDone', JSON.stringify([...done]))
+  }, [done])
+
+  const toggleDone = (key) =>
+    setDone((prev) => {
+      const next = new Set(prev)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      return next
+    })
 
   const toggleDay = (key) => {
     setPeriodDays((prev) => {
@@ -185,6 +230,49 @@ export default function Tracker() {
             )}
           </div>
         </div>
+
+        {/* Reminders — birth control + general health, kept with the tracker */}
+        <section className="tracker-reminders reveal">
+          <div className="reminders-head">
+            <h2>Reminders</h2>
+            <span>Tap an item once you&apos;ve done it</span>
+          </div>
+          <div className="tracker-reminders-grid">
+            {REMINDERS.map((r) => (
+              <article key={r.key} className="rem-cardx">
+                <div className="rem-cardx-top">
+                  <span className="rem-emoji" aria-hidden="true">{r.emoji}</span>
+                  <div>
+                    <h3>{r.title}</h3>
+                    <span className="rem-badge">{r.badge}</span>
+                  </div>
+                </div>
+                <ul>
+                  {r.items.map((item) => {
+                    const key = `${r.key}:${item.label}`
+                    const isDone = done.has(key)
+                    return (
+                      <li key={key}>
+                        <button
+                          type="button"
+                          className={`rem-item${isDone ? ' is-done' : ''}`}
+                          onClick={() => toggleDone(key)}
+                          aria-pressed={isDone}
+                        >
+                          <span className="rem-check" aria-hidden="true">{isDone ? '✓' : ''}</span>
+                          <span className="rem-item-copy">
+                            <strong>{item.label}</strong>
+                            <span>{item.when}</span>
+                          </span>
+                        </button>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   )

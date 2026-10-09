@@ -37,7 +37,7 @@ export default function AppNavbar() {
             Dashboard
           </NavLink>
           <NavLink to="/tracker" onClick={close} className={({ isActive }) => (isActive ? 'is-active' : '')}>
-            Period Tracker
+            Cycle &amp; Reminders
           </NavLink>
           <NavLink to="/articles" onClick={close} className={({ isActive }) => (isActive ? 'is-active' : '')}>
             Articles
