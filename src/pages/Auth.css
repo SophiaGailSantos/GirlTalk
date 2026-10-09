@@ -512,3 +512,18 @@
     max-width: 440px;
   }
 }
+
+a.auth-brand,
+a.auth-visual-brand {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.auth-terms {
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-align: center;
+  margin-bottom: 16px;
+}

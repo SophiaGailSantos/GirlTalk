@@ -31,8 +31,8 @@ export default function AuthCallback() {
     if (hashError || loading) return
 
     if (user) {
-      // Email confirmed / magic link signed us in → onboarding.
-      navigate('/welcome', { replace: true })
+      // Email confirmed / Google sign-in succeeded → dashboard.
+      navigate('/dashboard', { replace: true })
     } else {
       // No usable session in the link.
       navigate('/login', {

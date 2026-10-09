@@ -100,6 +100,22 @@ function PublicOnlyRoute({ children, redirectTo = '/dashboard' }) {
   return children
 }
 
+/* ---------- Homepage is only for logged-out visitors ---------- */
+function HomeOnlyRoute({ children }) {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="route-loading">
+        <span className="route-loading-dot" />
+      </div>
+    )
+  }
+
+  if (user) return <Navigate to="/dashboard" replace />
+  return children
+}
+
 /* ---------- Authenticated app shell (navbar + page) ---------- */
 function AppLayout({ children }) {
   return (
@@ -115,8 +131,15 @@ function AppRoutes() {
 
   return (
     <Routes>
-      {/* Public homepage */}
-      <Route path="/" element={<HomePage />} />
+      {/* Public homepage (logged-in users go straight to the dashboard) */}
+      <Route
+        path="/"
+        element={
+          <HomeOnlyRoute>
+            <HomePage />
+          </HomeOnlyRoute>
+        }
+      />
 
       {/* Auth pages (only when logged out) */}
       <Route
@@ -130,7 +153,7 @@ function AppRoutes() {
       <Route
         path="/signup"
         element={
-          <PublicOnlyRoute redirectTo="/welcome">
+          <PublicOnlyRoute redirectTo="/dashboard">
             <Signup />
           </PublicOnlyRoute>
         }
