@@ -583,3 +583,89 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Add reminder form ---- */
+.rem-add {
+  display: grid;
+  grid-template-columns: 1fr 110px 40px;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.rem-add input {
+  padding: 10px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--charcoal);
+  font: inherit;
+  font-size: 14px;
+  min-width: 0;
+}
+
+.rem-add input::placeholder {
+  color: var(--ink-faint);
+}
+
+.rem-add input:focus {
+  outline: none;
+  border-color: var(--rose);
+}
+
+.rem-add-btn {
+  width: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--grad-cta);
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.rem-add-btn:hover {
+  transform: scale(1.06);
+}
+
+.rem-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.rem-row .rem-item {
+  flex: 1;
+}
+
+.rem-delete {
+  width: 38px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.rem-delete:hover {
+  color: #ff6b8f;
+  border-color: rgba(255, 107, 143, 0.5);
+}
+
+.rem-empty {
+  color: var(--ink-faint);
+  font-size: 13.5px;
+  padding: 6px 2px;
+}
+
+@media (max-width: 620px) {
+  .rem-add {
+    grid-template-columns: 1fr 40px;
+  }
+
+  .rem-add-time {
+    display: none;
+  }
+}

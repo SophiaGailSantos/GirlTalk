@@ -16,29 +16,27 @@ function addDays(date, n) {
   return d
 }
 
-const REMINDERS = [
-  {
-    key: 'pill',
-    title: 'Birth control reminders',
-    badge: 'Private',
-    emoji: '💊',
-    items: [
-      { label: 'Birth control pill', when: 'Today · 9:00 PM' },
-      { label: 'Refill prescription', when: 'Friday · 10:00 AM' },
-    ],
-  },
-  {
-    key: 'health',
-    title: 'General health reminders',
-    badge: 'Everyday',
-    emoji: '🔔',
-    items: [
-      { label: 'Drink water', when: 'Daily · all day' },
-      { label: 'Vitamins', when: 'Daily · 8:00 AM' },
-      { label: 'Check-in appointment', when: 'When booked' },
-    ],
-  },
+const REMINDER_GROUPS = [
+  { key: 'pill', title: 'Birth control reminders', badge: 'Private', emoji: '💊' },
+  { key: 'health', title: 'General health reminders', badge: 'Everyday', emoji: '🔔' },
 ]
+
+const DEFAULT_REMINDERS = [
+  { id: 'pill-pill', group: 'pill', title: 'Birth control pill', time: '9:00 PM' },
+  { id: 'pill-refill', group: 'pill', title: 'Refill prescription', time: '10:00 AM' },
+  { id: 'health-water', group: 'health', title: 'Drink water', time: 'All day' },
+  { id: 'health-vitamins', group: 'health', title: 'Vitamins', time: '8:00 AM' },
+]
+
+function loadReminders() {
+  try {
+    const stored = JSON.parse(localStorage.getItem('girltalk:reminders') || 'null')
+    if (Array.isArray(stored) && stored.length) return stored
+  } catch {
+    /* fall through to defaults */
+  }
+  return DEFAULT_REMINDERS
+}
 
 export default function Tracker() {
   const [viewDate, setViewDate] = useState(new Date())
@@ -60,6 +58,8 @@ export default function Tracker() {
   }, [cycleLength])
 
   const [selected, setSelected] = useState(null)
+  const [reminders, setReminders] = useState(loadReminders)
+  const [draft, setDraft] = useState({ group: 'pill', title: '', time: '' })
   const [done, setDone] = useState(() => {
     try {
       return new Set(JSON.parse(localStorage.getItem('girltalk:remindersDone') || '[]'))
@@ -69,14 +69,38 @@ export default function Tracker() {
   })
 
   useEffect(() => {
+    localStorage.setItem('girltalk:reminders', JSON.stringify(reminders))
+  }, [reminders])
+
+  useEffect(() => {
     localStorage.setItem('girltalk:remindersDone', JSON.stringify([...done]))
   }, [done])
 
-  const toggleDone = (key) =>
+  const addReminder = (e) => {
+    e.preventDefault()
+    const title = draft.title.trim()
+    if (!title) return
+    setReminders((prev) => [
+      ...prev,
+      { id: `${draft.group}-${Date.now()}`, group: draft.group, title, time: draft.time.trim() || 'Anytime' },
+    ])
+    setDraft((d) => ({ ...d, title: '', time: '' }))
+  }
+
+  const removeReminder = (id) => {
+    setReminders((prev) => prev.filter((r) => r.id !== id))
     setDone((prev) => {
       const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
+      next.delete(id)
+      return next
+    })
+  }
+
+  const toggleDone = (id) =>
+    setDone((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
       return next
     })
 
@@ -238,39 +262,78 @@ export default function Tracker() {
             <span>Tap an item once you&apos;ve done it</span>
           </div>
           <div className="tracker-reminders-grid">
-            {REMINDERS.map((r) => (
-              <article key={r.key} className="rem-cardx">
-                <div className="rem-cardx-top">
-                  <span className="rem-emoji" aria-hidden="true">{r.emoji}</span>
-                  <div>
-                    <h3>{r.title}</h3>
-                    <span className="rem-badge">{r.badge}</span>
+            {REMINDER_GROUPS.map((g) => {
+              const items = reminders.filter((r) => r.group === g.key)
+              return (
+                <article key={g.key} className="rem-cardx">
+                  <div className="rem-cardx-top">
+                    <span className="rem-emoji" aria-hidden="true">{g.emoji}</span>
+                    <div>
+                      <h3>{g.title}</h3>
+                      <span className="rem-badge">{g.badge}</span>
+                    </div>
                   </div>
-                </div>
-                <ul>
-                  {r.items.map((item) => {
-                    const key = `${r.key}:${item.label}`
-                    const isDone = done.has(key)
-                    return (
-                      <li key={key}>
-                        <button
-                          type="button"
-                          className={`rem-item${isDone ? ' is-done' : ''}`}
-                          onClick={() => toggleDone(key)}
-                          aria-pressed={isDone}
-                        >
-                          <span className="rem-check" aria-hidden="true">{isDone ? '✓' : ''}</span>
-                          <span className="rem-item-copy">
-                            <strong>{item.label}</strong>
-                            <span>{item.when}</span>
-                          </span>
-                        </button>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </article>
-            ))}
+
+                  <form
+                    className="rem-add"
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      addReminder(e)
+                    }}
+                  >
+                    <input
+                      type="text"
+                      placeholder={`Add a ${g.key === 'pill' ? 'birth control' : 'health'} reminder`}
+                      value={draft.group === g.key ? draft.title : ''}
+                      onChange={(e) => setDraft((d) => ({ ...d, group: g.key, title: e.target.value }))}
+                      onFocus={() => setDraft((d) => ({ ...d, group: g.key }))}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Time"
+                      className="rem-add-time"
+                      value={draft.group === g.key ? draft.time : ''}
+                      onChange={(e) => setDraft((d) => ({ ...d, group: g.key, time: e.target.value }))}
+                      onFocus={() => setDraft((d) => ({ ...d, group: g.key }))}
+                    />
+                    <button type="submit" className="rem-add-btn" aria-label="Add reminder">
+                      +
+                    </button>
+                  </form>
+
+                  <ul>
+                    {items.map((item) => {
+                      const isDone = done.has(item.id)
+                      return (
+                        <li key={item.id} className="rem-row">
+                          <button
+                            type="button"
+                            className={`rem-item${isDone ? ' is-done' : ''}`}
+                            onClick={() => toggleDone(item.id)}
+                            aria-pressed={isDone}
+                          >
+                            <span className="rem-check" aria-hidden="true">{isDone ? '✓' : ''}</span>
+                            <span className="rem-item-copy">
+                              <strong>{item.title}</strong>
+                              <span>{item.time}</span>
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            className="rem-delete"
+                            onClick={() => removeReminder(item.id)}
+                            aria-label={`Delete ${item.title}`}
+                          >
+                            ✕
+                          </button>
+                        </li>
+                      )
+                    })}
+                    {items.length === 0 && <li className="rem-empty">No reminders yet — add one above.</li>}
+                  </ul>
+                </article>
+              )
+            })}
           </div>
         </section>
       </div>
