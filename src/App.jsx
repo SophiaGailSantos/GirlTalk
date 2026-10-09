@@ -72,7 +72,7 @@ function ScrollToTop() {
 }
 
 /* ---------- Routes that require an account ---------- */
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ children, allowSetup = false }) {
   const { user, loading } = useAuth()
 
   if (loading) {
@@ -86,7 +86,7 @@ function ProtectedRoute({ children }) {
   if (!user) return <Navigate to="/login" replace />
 
   // New members must finish setup before they see the app.
-  if (!isSetupDone(user.id)) return <Navigate to="/setup" replace />
+  if (!allowSetup && !isSetupDone(user.id)) return <Navigate to="/setup" replace />
 
   return children
 }
@@ -184,7 +184,7 @@ function AppRoutes() {
       <Route
         path="/setup"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allowSetup>
             <div className="app-theme-dark">
               <Onboarding />
             </div>

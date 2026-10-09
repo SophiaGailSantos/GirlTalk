@@ -21,6 +21,41 @@ function writeAll(all) {
   localStorage.setItem(KEY, JSON.stringify(all))
 }
 
+/* Moves data saved by earlier builds (flat localStorage keys) into the profile. */
+function migrateLegacy() {
+  const legacy = {
+    periodDays: 'girltalk:periodDays',
+    cycleLength: 'girltalk:cycleLength',
+    reminders: 'girltalk:reminders',
+    remindersDone: 'girltalk:remindersDone',
+  }
+  const out = {}
+  let found = false
+
+  Object.entries(legacy).forEach(([field, key]) => {
+    try {
+      const raw = localStorage.getItem(key)
+      if (raw === null) return
+      found = true
+      out[field] = JSON.parse(raw)
+    } catch {
+      /* skip unreadable legacy values */
+    }
+  })
+
+  if (!found) return null
+
+  return {
+    ...emptyProfile(),
+    periodDays: Array.isArray(out.periodDays) ? out.periodDays : [],
+    cycleLength: parseInt(out.cycleLength, 10) || 28,
+    reminders: Array.isArray(out.reminders) ? out.reminders : [],
+    remindersDone: Array.isArray(out.remindersDone) ? out.remindersDone : [],
+    /* If they already had period data, treat setup as complete. */
+    setupDone: (out.periodDays || []).length > 0,
+  }
+}
+
 export function emptyProfile() {
   return {
     setupDone: false,
@@ -36,8 +71,16 @@ export function getProfile(userId) {
   const all = readAll()
   const stored = all[userId]
   const base = emptyProfile()
-  if (!stored) return base
-  return { ...base, ...stored }
+  if (stored) return { ...base, ...stored }
+
+  const legacy = migrateLegacy()
+  if (legacy) {
+    all[userId] = legacy
+    writeAll(all)
+    return legacy
+  }
+
+  return base
 }
 
 export function saveProfile(userId, patch) {
