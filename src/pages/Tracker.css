@@ -21,7 +21,7 @@
 }
 
 .tracker-calendar {
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid rgba(44, 36, 34, 0.05);
   border-radius: var(--radius-lg);
   padding: 32px;
@@ -46,7 +46,7 @@
   height: 34px;
   border-radius: 50%;
   border: 1px solid rgba(44, 36, 34, 0.1);
-  background: var(--white);
+  background: var(--surface);
   font-size: 20px;
   line-height: 1;
   color: var(--charcoal);
@@ -164,7 +164,7 @@
 
 .tracker-form,
 .tracker-result {
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid rgba(44, 36, 34, 0.05);
   border-radius: var(--radius-lg);
   padding: 36px;
@@ -668,4 +668,42 @@
   .rem-add-time {
     display: none;
   }
+}
+
+/* ---- Invite new users to build their reminders ---- */
+.rem-invite {
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.rem-invite p {
+  color: var(--ink-soft);
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.rem-suggest {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rem-suggest-btn {
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(232, 74, 138, 0.45);
+  background: rgba(255, 45, 120, 0.08);
+  color: #ffc2da;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.rem-suggest-btn:hover {
+  background: var(--grad-cta);
+  border-color: transparent;
+  color: #fff;
 }

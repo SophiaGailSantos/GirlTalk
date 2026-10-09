@@ -24,7 +24,7 @@
 
 /* ---------- Period Tracker (dominant) ---------- */
 .dash-tracker {
-  background: var(--white);
+  background: var(--surface);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(44, 36, 34, 0.05);
   box-shadow: var(--shadow-card);
@@ -146,7 +146,7 @@
 
 /* ---------- Daily Health Check-In ---------- */
 .dash-checkin {
-  background: var(--white);
+  background: var(--surface);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(44, 36, 34, 0.05);
   box-shadow: var(--shadow-card);
@@ -182,7 +182,7 @@
 
 .checkin-chip {
   border: 1.5px solid rgba(44, 36, 34, 0.12);
-  background: var(--white);
+  background: var(--surface);
   color: var(--ink-soft);
   font-size: 14px;
   font-weight: 500;
@@ -219,7 +219,7 @@
 
 .checkin-notes:focus {
   border-color: var(--rose);
-  background: var(--white);
+  background: var(--surface);
   box-shadow: 0 0 0 4px rgba(201, 123, 143, 0.1);
 }
 
@@ -269,7 +269,7 @@
 }
 
 .dash-article-card {
-  background: var(--white);
+  background: var(--surface);
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid rgba(44, 36, 34, 0.05);
@@ -339,7 +339,7 @@
 }
 
 .dash-thread {
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid rgba(44, 36, 34, 0.05);
   border-radius: var(--radius-md);
   padding: 20px 22px;
@@ -605,7 +605,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--radius-md);
   padding: 20px;
@@ -636,7 +636,7 @@
 
 /* ---- Today's reminders on the dashboard ---- */
 .dash-reminders {
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--radius-lg);
   padding: 28px 30px;

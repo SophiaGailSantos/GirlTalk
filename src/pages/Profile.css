@@ -11,7 +11,7 @@
 
 .profile-card,
 .profile-side {
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid rgba(44, 36, 34, 0.05);
   border-radius: var(--radius-lg);
   padding: 36px;

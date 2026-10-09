@@ -348,7 +348,9 @@ section[id] {
 
 /* ---------- Dark "black card" theme for the authenticated app ---------- */
 .app-theme-dark {
-  --white: #171214;
+  /* Card surface colour for the dark app (--white stays light for text). */
+  --surface: #171214;
+  --surface-2: #1e1619;
   --muted: #cbb8bd;
   --cream: #120e10;
   --cream-alt: #1d1518;

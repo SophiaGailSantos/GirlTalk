@@ -21,21 +21,20 @@ const REMINDER_GROUPS = [
   { key: 'health', title: 'General health reminders', badge: 'Everyday', emoji: '🔔' },
 ]
 
-const DEFAULT_REMINDERS = [
-  { id: 'pill-pill', group: 'pill', title: 'Birth control pill', time: '9:00 PM' },
-  { id: 'pill-refill', group: 'pill', title: 'Refill prescription', time: '10:00 AM' },
-  { id: 'health-water', group: 'health', title: 'Drink water', time: 'All day' },
-  { id: 'health-vitamins', group: 'health', title: 'Vitamins', time: '8:00 AM' },
-]
+const SUGGESTIONS = {
+  pill: ['Birth control pill', 'Refill prescription', 'Injection reminder'],
+  health: ['Drink water', 'Vitamins', 'Skincare', 'Stretching', 'Sleep by 10 PM'],
+}
 
 function loadReminders() {
   try {
     const stored = JSON.parse(localStorage.getItem('girltalk:reminders') || 'null')
-    if (Array.isArray(stored) && stored.length) return stored
+    if (Array.isArray(stored)) return stored
   } catch {
-    /* fall through to defaults */
+    /* ignore corrupt storage */
   }
-  return DEFAULT_REMINDERS
+  /* New user: start with an empty list so they can build their own. */
+  return []
 }
 
 export default function Tracker() {
@@ -302,34 +301,56 @@ export default function Tracker() {
                   </form>
 
                   <ul>
-                    {items.map((item) => {
-                      const isDone = done.has(item.id)
-                      return (
-                        <li key={item.id} className="rem-row">
-                          <button
-                            type="button"
-                            className={`rem-item${isDone ? ' is-done' : ''}`}
-                            onClick={() => toggleDone(item.id)}
-                            aria-pressed={isDone}
-                          >
-                            <span className="rem-check" aria-hidden="true">{isDone ? '✓' : ''}</span>
-                            <span className="rem-item-copy">
-                              <strong>{item.title}</strong>
-                              <span>{item.time}</span>
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            className="rem-delete"
-                            onClick={() => removeReminder(item.id)}
-                            aria-label={`Delete ${item.title}`}
-                          >
-                            ✕
-                          </button>
-                        </li>
-                      )
-                    })}
-                    {items.length === 0 && <li className="rem-empty">No reminders yet — add one above.</li>}
+                    {items.length === 0 ? (
+                      <li className="rem-invite">
+                        <p>No reminders here yet — add the ones you want to see every day.</p>
+                        <div className="rem-suggest">
+                          {SUGGESTIONS[g.key].map((s) => (
+                            <button
+                              key={s}
+                              type="button"
+                              className="rem-suggest-btn"
+                              onClick={() =>
+                                setReminders((prev) => [
+                                  ...prev,
+                                  { id: `${g.key}-${Date.now()}-${s}`, group: g.key, title: s, time: 'Anytime' },
+                                ])
+                              }
+                            >
+                              + {s}
+                            </button>
+                          ))}
+                        </div>
+                      </li>
+                    ) : (
+                      items.map((item) => {
+                        const isDone = done.has(item.id)
+                        return (
+                          <li key={item.id} className="rem-row">
+                            <button
+                              type="button"
+                              className={`rem-item${isDone ? ' is-done' : ''}`}
+                              onClick={() => toggleDone(item.id)}
+                              aria-pressed={isDone}
+                            >
+                              <span className="rem-check" aria-hidden="true">{isDone ? '✓' : ''}</span>
+                              <span className="rem-item-copy">
+                                <strong>{item.title}</strong>
+                                <span>{item.time}</span>
+                              </span>
+                            </button>
+                            <button
+                              type="button"
+                              className="rem-delete"
+                              onClick={() => removeReminder(item.id)}
+                              aria-label={`Delete ${item.title}`}
+                            >
+                              ✕
+                            </button>
+                          </li>
+                        )
+                      })
+                    )}
                   </ul>
                 </article>
               )

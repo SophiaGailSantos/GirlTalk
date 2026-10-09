@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid rgba(44, 36, 34, 0.05);
   border-radius: var(--radius-md);
   padding: 24px 28px;
@@ -115,7 +115,7 @@
   align-items: center;
   gap: 20px;
   text-align: center;
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid rgba(44, 36, 34, 0.05);
   border-radius: var(--radius-md);
   padding: 28px;
@@ -153,7 +153,7 @@
 }
 
 .community-comment {
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--radius-md);
   padding: 16px 20px;
@@ -181,7 +181,7 @@
   padding: 14px 16px;
   border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: var(--white);
+  background: var(--surface);
   color: var(--charcoal);
   font: inherit;
   resize: vertical;
