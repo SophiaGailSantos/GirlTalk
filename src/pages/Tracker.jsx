@@ -31,6 +31,10 @@ export default function Tracker() {
     localStorage.setItem('girltalk:periodDays', JSON.stringify([...periodDays]))
   }, [periodDays])
 
+  useEffect(() => {
+    localStorage.setItem('girltalk:cycleLength', String(cycleLength))
+  }, [cycleLength])
+
   const toggleDay = (key) => {
     setPeriodDays((prev) => {
       const next = new Set(prev)

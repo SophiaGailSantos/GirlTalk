@@ -463,3 +463,173 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Check-in redesign ---- */
+.checkin-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.checkin-date {
+  font-size: 13px;
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+}
+
+.checkin-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+}
+
+.checkin-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.checkin-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.checkin-chip:hover {
+  transform: translateY(-1px);
+  border-color: var(--rose);
+  color: #fff;
+}
+
+.checkin-chip.is-on {
+  background: var(--grad-cta);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 8px 22px -10px rgba(239, 34, 104, 0.8);
+}
+
+.checkin-emoji {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.checkin-notes {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: var(--charcoal) !important;
+}
+
+.checkin-notes::placeholder {
+  color: var(--ink-faint);
+}
+
+/* ---- Cycle empty state ---- */
+.dash-empty-ring {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: grid;
+  place-items: center;
+}
+
+.dash-empty-ring span {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 40px;
+  color: var(--ink-faint);
+}
+
+.dash-empty-title {
+  font-size: 24px;
+  color: var(--charcoal);
+  margin: 8px 0 10px;
+}
+
+.dash-empty-text {
+  color: var(--ink-soft);
+  max-width: 380px;
+  margin-bottom: 4px;
+}
+
+/* ---- Article cover art ---- */
+.dash-article-cover {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.dash-article-cover svg {
+  width: 120px;
+  opacity: 0.9;
+}
+
+.dash-article-cover .dash-article-cat {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  color: var(--rose-deep);
+  background: rgba(255, 255, 255, 0.75);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---- Self-care cards ---- */
+.selfcare-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.selfcare-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.selfcare-card strong {
+  color: var(--charcoal);
+  font-size: 15px;
+}
+
+.selfcare-card p {
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.selfcare-emoji {
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 900px) {
+  .selfcare-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

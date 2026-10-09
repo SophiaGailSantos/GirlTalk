@@ -378,3 +378,16 @@ section[id] {
 .app-theme-dark .appnav-word {
   color: var(--charcoal);
 }
+
+/* Logout button must stay legible in the dark app theme */
+.app-theme-dark .appnav-logout {
+  background: #241b1f;
+  color: #f6ecef;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.app-theme-dark .appnav-logout:hover {
+  background: var(--rose);
+  color: #fff;
+  border-color: transparent;
+}
