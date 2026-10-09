@@ -14,9 +14,13 @@
 }
 
 .hub-hero {
-  max-width: 780px;
+  max-width: 1200px;
   margin-bottom: 54px;
   padding-inline: 24px;
+}
+
+.hub-hero .hub-sub {
+  max-width: 640px;
 }
 
 .hub-title {
@@ -95,7 +99,7 @@
 /* Journeys */
 .hub-journeys {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
   gap: 16px;
   margin-top: 22px;
 }
