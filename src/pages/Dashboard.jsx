@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
+import { ARTICLES } from '../data/articles.js'
 import './Dashboard.css'
+
+const DASH_ARTICLES = ARTICLES.slice(0, 3)
 
 /* Circular cycle ring for the dashboard */
 function CycleRing({ day = 12, length = 28 }) {
@@ -76,36 +79,6 @@ const SELFCARE = [
   { title: 'Do something you enjoy', text: 'A small pleasure goes a long way today.', emoji: '🌷' },
 ]
 
-const COVER_ART = {
-  cycle: (
-    <svg viewBox="0 0 120 80" aria-hidden="true">
-      <circle cx="60" cy="40" r="22" fill="none" stroke="rgba(207,27,92,0.45)" strokeWidth="6" strokeDasharray="95 45" strokeLinecap="round" transform="rotate(-90 60 40)" />
-      <circle cx="60" cy="40" r="7" fill="#cf1b5c" />
-      <path d="M60 8c8 10 8 20 0 32-8-12-8-22 0-32z" fill="rgba(207,27,92,0.35)" />
-    </svg>
-  ),
-  care: (
-    <svg viewBox="0 0 120 80" aria-hidden="true">
-      <path d="M60 62s-20-13-24-27c-3-11 5-19 14-17 5 1 8 5 10 9 2-4 5-8 10-9 9-2 17 6 14 17-4 14-24 27-24 27z" fill="rgba(207,27,92,0.35)" />
-      <circle cx="46" cy="32" r="5" fill="#cf1b5c" />
-      <circle cx="72" cy="28" r="7" fill="rgba(207,27,92,0.6)" />
-    </svg>
-  ),
-  health: (
-    <svg viewBox="0 0 120 80" aria-hidden="true">
-      <rect x="30" y="18" width="60" height="46" rx="10" fill="none" stroke="rgba(207,27,92,0.45)" strokeWidth="5" />
-      <path d="M30 32h60M44 12v12M76 12v12" stroke="rgba(207,27,92,0.45)" strokeWidth="5" strokeLinecap="round" />
-      <circle cx="60" cy="46" r="8" fill="#cf1b5c" />
-    </svg>
-  ),
-  wellness: (
-    <svg viewBox="0 0 120 80" aria-hidden="true">
-      <path d="M24 58c10-22 24-30 36-30s26 8 36 30" fill="none" stroke="rgba(207,27,92,0.4)" strokeWidth="5" strokeLinecap="round" />
-      <circle cx="60" cy="30" r="10" fill="#cf1b5c" />
-      <path d="M40 66h40" stroke="rgba(207,27,92,0.4)" strokeWidth="5" strokeLinecap="round" />
-    </svg>
-  ),
-}
 
 /* Reads the cycle data the Period Tracker stores for this browser. */
 function useCycleData() {
@@ -146,9 +119,53 @@ function useCycleData() {
   return cycle
 }
 
+/* Reads the reminders the Cycle & Reminders page stores for this browser. */
+function useTodayReminders() {
+  const [state, setState] = useState({ items: [], done: new Set() })
+
+  const load = () => {
+    let items = []
+    try {
+      const stored = JSON.parse(localStorage.getItem('girltalk:reminders') || 'null')
+      if (Array.isArray(stored) && stored.length) items = stored
+    } catch {
+      items = []
+    }
+    let done = new Set()
+    try {
+      done = new Set(JSON.parse(localStorage.getItem('girltalk:remindersDone') || '[]'))
+    } catch {
+      done = new Set()
+    }
+    setState({ items, done })
+  }
+
+  useEffect(() => {
+    load()
+    window.addEventListener('focus', load)
+    const onStorage = () => load()
+    window.addEventListener('storage', onStorage)
+    return () => {
+      window.removeEventListener('focus', load)
+      window.removeEventListener('storage', onStorage)
+    }
+  }, [])
+
+  const toggle = (id) => {
+    const next = new Set(state.done)
+    if (next.has(id)) next.delete(id)
+    else next.add(id)
+    setState((s) => ({ ...s, done: next }))
+    localStorage.setItem('girltalk:remindersDone', JSON.stringify([...next]))
+  }
+
+  return { ...state, toggle }
+}
+
 export default function Dashboard() {
   const { user } = useAuth()
   const cycle = useCycleData()
+  const reminders = useTodayReminders()
 
   const [mood, setMood] = useState('')
   const [energy, setEnergy] = useState('')
@@ -315,6 +332,49 @@ export default function Dashboard() {
           </form>
         </section>
 
+        {/* Today's reminders */}
+        <section className="dash-reminders reveal">
+          <div className="dash-section-head">
+            <h2>Today&apos;s reminders</h2>
+            <Link to="/tracker" className="dash-section-link">
+              Manage
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </div>
+
+          {reminders.items.length === 0 ? (
+            <div className="rem-empty-dash">
+              <p>No reminders yet. Add birth control or health reminders and they&apos;ll show up here every day.</p>
+              <Link to="/tracker" className="btn btn-primary">Add my first reminder</Link>
+            </div>
+          ) : (
+            <ul className="rem-dash-list">
+              {reminders.items.slice(0, 6).map((r) => {
+                const isDone = reminders.done.has(r.id)
+                return (
+                  <li key={r.id}>
+                    <button
+                      type="button"
+                      className={`rem-item${isDone ? ' is-done' : ''}`}
+                      onClick={() => reminders.toggle(r.id)}
+                      aria-pressed={isDone}
+                    >
+                      <span className="rem-check" aria-hidden="true">{isDone ? '✓' : ''}</span>
+                      <span className="rem-item-copy">
+                        <strong>{r.title}</strong>
+                        <span>{r.time}</span>
+                      </span>
+                      <span className="rem-group-tag">{r.group === 'pill' ? 'Birth control' : 'Health'}</span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+        </section>
+
         {/* Latest Articles */}
         <section className="dash-section reveal">
           <div className="dash-section-head">
@@ -327,36 +387,18 @@ export default function Dashboard() {
             </Link>
           </div>
           <div className="dash-articles">
-            <Link to="/articles" className="dash-article-card">
-              <div className="dash-article-cover dash-article-cover--rose">
-                {COVER_ART.cycle}
-                <span className="dash-article-cat">Period Health</span>
-              </div>
-              <div className="dash-article-body">
-                <strong>Understanding Your Menstrual Cycle</strong>
-                <span>6 min read</span>
-              </div>
-            </Link>
-            <Link to="/articles" className="dash-article-card">
-              <div className="dash-article-cover dash-article-cover--beige">
-                {COVER_ART.care}
-                <span className="dash-article-cat">Self-Care</span>
-              </div>
-              <div className="dash-article-body">
-                <strong>Simple Ways to Take Care of Yourself During Your Period</strong>
-                <span>5 min read</span>
-              </div>
-            </Link>
-            <Link to="/articles" className="dash-article-card">
-              <div className="dash-article-cover dash-article-cover--blush">
-                {COVER_ART.health}
-                <span className="dash-article-cat">Cycle Health</span>
-              </div>
-              <div className="dash-article-body">
-                <strong>When to Pay Attention to Changes in Your Cycle</strong>
-                <span>7 min read</span>
-              </div>
-            </Link>
+            {DASH_ARTICLES.map((a) => (
+              <Link key={a.slug} to={`/articles?article=${a.slug}`} className="dash-article-card">
+                <div className="dash-article-cover">
+                  <img src={a.image} alt="" loading="lazy" />
+                  <span className="dash-article-cat">{a.cat}</span>
+                </div>
+                <div className="dash-article-body">
+                  <strong>{a.title}</strong>
+                  <span>{a.read}</span>
+                </div>
+              </Link>
+            ))}
           </div>
         </section>
 
